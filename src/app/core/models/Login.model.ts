@@ -1,4 +1,4 @@
-export interface IloginResponse {
+export interface ILoginResponse {
   "Login": {
     "AccessToken": string,
     "ExpiresIn": number,
@@ -9,4 +9,9 @@ export interface IloginResponse {
     "SessionState": string,
     "Scope": string
   }
+}
+
+export interface ILoginRequest {
+  "username": string,
+  "password": string,
 }
