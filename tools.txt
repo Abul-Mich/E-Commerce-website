@@ -1,0 +1,3 @@
+username: michel
+email: michel@gmail.com
+password: Micho@$1

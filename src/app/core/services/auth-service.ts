@@ -3,8 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, tap, map, catchError, throwError } from 'rxjs';
-import { IUser } from '../models/user.model';
-import { ILoginResponse, ILoginRequest } from './models/Login.model';
+import { IUser } from '../../models/user';
+import { ILoginResponse, ILoginRequest } from '../models/Login';
+import { IUserRequest, IUserResponse } from '../models/User';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,7 @@ export class AuthService {
   private readonly router = inject(Router);
   private readonly cookieService = inject(CookieService);
 
-  private readonly API_BASE = 'http://192.168.7.156:5005/api';
+  private readonly API_BASE = 'https://melaine-palaeobiologic-savourily.ngrok-free.dev/api';
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
   private readonly COOKIE_OPTIONS = { expires: 7, sameSite: 'Strict' as const, secure: true };
@@ -23,8 +25,8 @@ export class AuthService {
   // Reactive State (Signals)
   // ---------------------------------------------------------------------------
 
-  private readonly _token = signal<string | null>(null);
-  private readonly _currentUser = signal<IUser | null>(null);
+  private _token = signal<string | null>(null);
+  private _currentUser = signal<IUser | null>(null);
 
   readonly token = this._token.asReadonly();
   readonly currentUser = this._currentUser.asReadonly();
@@ -41,35 +43,44 @@ export class AuthService {
     this._currentUser.set(this.loadUser());
   }
 
+  isAdmin(): boolean {
+    const user = this.currentUser();
+    return user?.role === 'admin';
+  }
+
   // ---------------------------------------------------------------------------
   // Authentication
   // ---------------------------------------------------------------------------
+  register(userData: IUserRequest): Observable<IUserResponse> {
+    return this.http.post<IUserResponse>(`${this.API_BASE}/auth/register`, userData).pipe(
+      catchError((err) => {
+        return throwError(() => err);
+      }),
+    );
+  }
 
   login(credentials: ILoginRequest): Observable<string> {
-    return this.http
-      .post<ILoginResponse>(`${this.API_BASE}/User/Login`, credentials)
-      .pipe(
-        tap((res) => {
-          const token = res?.Login?.AccessToken;
-          if (!token) return;
-          this.persistToken(token);
-          const decoded = this.decodeToken(token);
-          if (decoded) {
-            const user: IUser = {
-              id: (decoded['sub'] ?? decoded['nameid'] ?? '') as string,
-              username: (decoded['unique_name'] ?? decoded['name'] ?? '') as string,
-              email: (decoded['email'] ?? '') as string,
-              roles: this.parseRoles(decoded['role']),
-            };
-            this.persistUser(user);
-          }
-        }),
-        map((res) => res.Login.AccessToken),
-        catchError((err) => {
-          this.clearSession();
-          return throwError(() => err);
-        })
-      );
+    return this.http.post<ILoginResponse>(`${this.API_BASE}/auth/login`, credentials).pipe(
+      tap((res) => {
+        const token = res?.token;
+        if (!token) return;
+        this.persistToken(token);
+        if (res.user) {
+          const user: IUser = {
+            username: res.user.username,
+            email: res.user.email,
+            firstName: res.user.firstName,
+            role: res.user.role,
+          };
+          this.persistUser(user);
+        }
+      }),
+      map((res) => res.token),
+      catchError((err) => {
+        this.clearSession();
+        return throwError(() => err);
+      }),
+    );
   }
 
   logout(): void {
@@ -134,10 +145,7 @@ export class AuthService {
 
   decodeToken(token: string): Record<string, unknown> | null {
     try {
-      const payload = token.split('.')[1];
-      if (!payload) return null;
-      const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-      return JSON.parse(decoded) as Record<string, unknown>;
+      return jwtDecode<Record<string, unknown>>(token);
     } catch {
       return null;
     }
@@ -158,9 +166,9 @@ export class AuthService {
     return new Date(decoded['exp'] * 1000);
   }
 
-  hasRole(role: string): boolean {
-    return this._currentUser()?.roles?.includes(role) ?? false;
-  }
+  // hasRole(role: string): boolean {
+  //   return this._currentUser()?.roles?.includes(role) ?? false;
+  // }
 
   // ---------------------------------------------------------------------------
   // Helpers

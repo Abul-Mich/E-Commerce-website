@@ -28,6 +28,9 @@
     "@angular/forms": "^20.2.0",
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
+    "ag-grid-angular": "^35.1.0",
+    "jwt-decode": "^4.0.0",
+    "lucide-angular": "^0.576.0",
     "ngx-cookie-service": "^20.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -37,13 +40,17 @@
     "@angular/build": "^20.2.2",
     "@angular/cli": "^20.2.2",
     "@angular/compiler-cli": "^20.2.0",
+    "@eslint/js": "^10.0.1",
     "@types/jasmine": "~5.1.0",
+    "eslint": "^10.0.0",
+    "globals": "^17.3.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.56.0"
   }
 }
