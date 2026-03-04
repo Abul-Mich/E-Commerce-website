@@ -1,0 +1,522 @@
+$teal: #008174;
+
+$fb: #3b5998;
+$tw: #1da1f2;
+$gg: #db4437;
+$text-dark: #1a1f2e;
+$text-mid: #5a6278;
+$text-light: #9aa3bb;
+$bg-page: #e8f5f0;
+$white: #ffffff;
+$radius-card: 18px;
+$radius-btn: 6px;
+$radius-field: 6px;
+$shadow-card:
+  0 20px 60px rgba(26, 171, 138, 0.12),
+  0 4px 16px rgba(0, 0, 0, 0.06);
+$font-display: 'Playfair Display', Georgia, serif;
+$font-body: 'DM Sans', system-ui, sans-serif;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 16px;
+}
+body {
+  font-family: $font-body;
+  background: $bg-page;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+a {
+  text-decoration: none;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+input {
+  font-family: inherit;
+}
+
+.page-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow: hidden;
+}
+
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+
+  &--tl {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, #8ee8d4, #3bbcd6);
+    top: -140px;
+    left: -140px;
+  }
+  &--br {
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, #b3f0e0, #1aab8a);
+    bottom: -120px;
+    right: -100px;
+  }
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  background: $white;
+  border: 2px solid $teal;
+  border-radius: $radius-card;
+  padding: 40px 36px 32px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: $shadow-card;
+  animation: cardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @media (max-width: 480px) {
+    padding: 32px 22px 26px;
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@mixin dot-grid($size: 5, $gap: 8px, $color: rgba($teal, 0.35)) {
+  $total: $size * $size;
+  display: grid;
+  grid-template-columns: repeat($size, 5px);
+  gap: $gap;
+  pointer-events: none;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: $color;
+    grid-column: 1 / -1; // handled via box-shadow trick below
+  }
+}
+
+.dots {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(4, 6px);
+  grid-template-rows: repeat(4, 6px);
+  gap: 7px;
+
+  // Generate 16 dots via children
+  $n: 16;
+  @for $i from 1 through $n {
+    span:nth-child(#{$i}) {
+      display: block;
+    }
+  }
+
+  &--tr {
+    top: 14px;
+    right: 16px;
+  }
+  &--bl {
+    bottom: 14px;
+    left: 16px;
+  }
+
+  // Inline dot generation with box-shadow hack
+  &::after {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba($teal, 0.4);
+    box-shadow:
+      13px 0 rgba($teal, 0.4),
+      26px 0 rgba($teal, 0.4),
+      0 13px rgba($teal, 0.4),
+      13px 13px rgba($teal, 0.4),
+      26px 13px rgba($teal, 0.4),
+      0 26px rgba($teal, 0.4),
+      13px 26px rgba($teal, 0.4),
+      26px 26px rgba($teal, 0.4),
+      0 39px rgba($teal, 0.4),
+      13px 39px rgba($teal, 0.4),
+      26px 39px rgba($teal, 0.4);
+  }
+}
+
+.card__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 4px;
+  animation: fadeUp 0.45s 0.15s both;
+}
+
+.brand-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.brand-name {
+  font-family: $font-display;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $text-dark;
+  letter-spacing: -0.02em;
+}
+
+.card__tagline {
+  text-align: center;
+  font-size: 0.82rem;
+  color: $text-light;
+  font-weight: 400;
+  margin-bottom: 28px;
+  animation: fadeUp 0.45s 0.2s both;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeUp 0.45s 0.25s both;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: $text-mid;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  &__wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    position: absolute;
+    left: 14px;
+    width: 17px;
+    height: 17px;
+    color: $text-light;
+    pointer-events: none;
+    transition: color 0.2s;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 12px 44px 12px 42px;
+    border: 1.8px solid #dde3ef;
+    border-radius: $radius-field;
+    font-size: 0.92rem;
+    color: $text-dark;
+    background: #fafcff;
+    outline: none;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s,
+      background 0.2s;
+
+    &::placeholder {
+      color: $text-light;
+    }
+
+    &:focus {
+      border-color: $teal;
+      box-shadow: 0 0 0 3px rgba($teal, 0.12);
+      background: $white;
+
+      // Make the sibling icon teal on focus
+      & ~ .field__icon,
+      + .field__icon {
+        color: $teal;
+      }
+
+      &.error {
+        border-color: #f44336;
+      }
+    }
+  }
+
+  &__toggle {
+    position: absolute;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    color: $text-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+    padding: 0;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover,
+    &.active {
+      color: $teal;
+    }
+  }
+
+  // Adjust icon position when there's also a toggle button
+  &__wrap:has(.field__toggle) .field__icon {
+    pointer-events: none;
+  }
+}
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: $radius-btn;
+  font-family: $font-body;
+  font-weight: 600;
+  font-size: 0.96rem;
+  transition:
+    transform 0.18s,
+    box-shadow 0.18s,
+    background 0.18s;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s;
+  }
+
+  &:hover svg {
+    transform: translateX(3px);
+  }
+  &:active {
+    transform: scale(0.975);
+  }
+
+  &--primary {
+    background: linear-gradient(135deg, $teal 0%, $teal 100%);
+    color: $white;
+    padding: 14px 24px;
+    box-shadow: 0 6px 20px rgba($teal, 0.35);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+
+    &:hover {
+      background: linear-gradient(135deg, darken($teal, 4%) 0%, darken($teal, 4%) 100%);
+      box-shadow: 0 8px 24px rgba($teal, 0.45);
+    }
+  }
+}
+
+// Ripple effect
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 0.55s linear;
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 18px;
+  animation: fadeUp 0.45s 0.3s both;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e8edf5;
+  }
+
+  span {
+    font-size: 0.78rem;
+    color: $text-light;
+    font-weight: 500;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+}
+
+.social {
+  display: flex;
+  gap: 10px;
+  animation: fadeUp 0.45s 0.35s both;
+
+  @media (max-width: 380px) {
+    flex-direction: column;
+  }
+
+  &__btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 11px 8px;
+    border-radius: $radius-btn;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: $white;
+    transition:
+      filter 0.18s,
+      transform 0.18s,
+      box-shadow 0.18s;
+    letter-spacing: 0.02em;
+
+    svg {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+    &:active {
+      transform: translateY(0);
+      filter: brightness(0.95);
+    }
+
+    &--fb {
+      background: $fb;
+      box-shadow: 0 4px 12px rgba($fb, 0.3);
+    }
+    &--tw {
+      background: $tw;
+      box-shadow: 0 4px 12px rgba($tw, 0.3);
+    }
+    &--gg {
+      background: $gg;
+      box-shadow: 0 4px 12px rgba($gg, 0.3);
+    }
+  }
+}
+
+.card__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 22px;
+  animation: fadeUp 0.45s 0.4s both;
+}
+
+.card__signup {
+  font-size: 0.85rem;
+  color: $text-mid;
+}
+
+.link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.18s;
+
+  &--muted {
+    color: $text-mid;
+    text-decoration: underline;
+    &:hover {
+      color: $teal;
+    }
+  }
+
+  &--accent {
+    color: $teal;
+    font-weight: 600;
+    &:hover {
+      color: $teal;
+    }
+  }
+}
+
+.error-message {
+  small {
+    color: #f44336;
+    font-size: 12px;
+    display: block;
+  }
+}
+
+.message {
+  margin-top: 20px;
+  padding: 10px;
+
+  border-radius: 6px;
+  text-align: center;
+  &__success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+  }
+  &__error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

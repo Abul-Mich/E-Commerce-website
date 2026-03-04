@@ -1,0 +1,333 @@
+<div class="page-wrapper">
+  <div class="blob blob--tl"></div>
+  <div class="blob blob--br"></div>
+
+  <main class="card">
+    <div class="dots dots--tr" aria-hidden="true"></div>
+    <div class="dots dots--bl" aria-hidden="true"></div>
+
+    <div class="card__brand">
+      <h1 class="brand-name">Fake Store</h1>
+    </div>
+
+    <p class="card__tagline">Create your account — it's free!</p>
+
+    <form class="form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <div class="form__row">
+        <div class="field">
+          <label for="firstname" class="field__label">First Name</label>
+          <div class="field__wrap">
+            <svg
+              class="field__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <input
+              id="firstname"
+              type="text"
+              formControlName="firstName"
+              class="field__input"
+              autocomplete="given-name"
+              [class.error]="
+                signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched
+              "
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="lastname" class="field__label">Last Name</label>
+          <div class="field__wrap">
+            <svg
+              class="field__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <input
+              id="lastname"
+              type="text"
+              formControlName="lastName"
+              class="field__input"
+              autocomplete="family-name"
+              [class.error]="
+                signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched
+              "
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="username" class="field__label">Username</label>
+        <div class="field__wrap">
+          <svg
+            class="field__icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            <path d="M21 21v-2a4 4 0 0 0-3-3.85" />
+          </svg>
+          <span class="field__prefix">@</span>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            class="field__input field__input--prefixed"
+            autocomplete="username"
+            [class.error]="
+              signupForm.get('username')?.invalid && signupForm.get('username')?.touched
+            "
+          />
+        </div>
+        @if (signupForm.get('username')?.invalid && signupForm.get('username')?.touched) {
+          <div class="error-message">
+            @if (signupForm.get('username')?.hasError('required')) {
+              <small>Username is required</small>
+            }
+            @if (signupForm.get('username')?.hasError('minlength')) {
+              <small>Username must be at least 3 characters</small>
+            }
+            @if (signupForm.get('username')?.hasError('whitespace')) {
+              <small>Username cannot contain whitespace</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="email" class="field__label">Email</label>
+        <div class="field__wrap">
+          <svg
+            class="field__icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <rect x="2" y="4" width="20" height="16" rx="3" />
+            <path d="M2 7l10 7 10-7" />
+          </svg>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="field__input"
+            autocomplete="email"
+            [class.error]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+          />
+        </div>
+        @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
+          <div class="error-message">
+            @if (signupForm.get('email')?.hasError('required')) {
+              <small>Email is required</small>
+            }
+            @if (signupForm.get('email')?.hasError('email')) {
+              <small>Please enter a valid email</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password" class="field__label">Password</label>
+        <div class="field__wrap">
+          <svg
+            class="field__icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            class="field__input"
+            autocomplete="current-password"
+            [class.error]="
+              signupForm.get('password')?.invalid && signupForm.get('password')?.touched
+            "
+          />
+          <button
+            type="button"
+            class="field__toggle"
+            aria-label="Show password"
+            (click)="togglefieldVisibility(showPassword)"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              @if (showPassword()) {
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              } @else {
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              }
+            </svg>
+          </button>
+        </div>
+        @if (signupForm.get('password')?.invalid && signupForm.get('password')?.touched) {
+          <div class="error-message">
+            @if (signupForm.get('password')?.hasError('required')) {
+              <small>Password is required</small>
+            }
+            @if (signupForm.get('password')?.hasError('strongPassword')) {
+              <small>
+                Password must contain:
+                <ul>
+                  <li
+                    [class.valid]="
+                      signupForm.get('password')?.errors?.['strongPassword']?.isValidLength
+                    "
+                  >
+                    At least 8 characters
+                  </li>
+                  <li
+                    [class.valid]="
+                      signupForm.get('password')?.errors?.['strongPassword']?.hasUpperCase
+                    "
+                  >
+                    One uppercase letter
+                  </li>
+                  <li
+                    [class.valid]="
+                      signupForm.get('password')?.errors?.['strongPassword']?.hasLowerCase
+                    "
+                  >
+                    One lowercase letter
+                  </li>
+                  <li
+                    [class.valid]="
+                      signupForm.get('password')?.errors?.['strongPassword']?.hasNumeric
+                    "
+                  >
+                    One number
+                  </li>
+                  <li
+                    [class.valid]="
+                      signupForm.get('password')?.errors?.['strongPassword']?.hasSpecialChar
+                    "
+                  >
+                    One special character
+                  </li>
+                </ul>
+              </small>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="confirm" class="field__label">Confirm Password</label>
+        <div class="field__wrap">
+          <svg
+            class="field__icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          <input
+            id="confirm"
+            [type]="showConfirmPassword() ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            class="field__input"
+            autocomplete="new-password"
+            [class.error]="
+              (signupForm.get('confirmPassword')?.invalid ||
+                signupForm.hasError('passwordMismatch')) &&
+              signupForm.get('confirmPassword')?.touched
+            "
+          />
+          <button
+            type="button"
+            class="field__toggle"
+            aria-label="Show password"
+            (click)="togglefieldVisibility(showConfirmPassword)"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              @if (showConfirmPassword()) {
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              } @else {
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              }
+            </svg>
+          </button>
+        </div>
+        <span class="field__match" id="matchMsg"></span>
+        @if (
+          signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched
+        ) {
+          <div class="error-message">
+            <small *ngIf="signupForm.get('confirmPassword')?.hasError('required')"
+              >Confirm password is required</small
+            >
+          </div>
+        }
+        @if (
+          signupForm.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched
+        ) {
+          <div class="error-message">
+            <small>Passwords do not match</small>
+          </div>
+        }
+      </div>
+
+      <button type="submit" class="btn btn--primary" [disabled]="signupForm.invalid">
+        <span>Create Account</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </button>
+    </form>
+
+    <div class="divider">
+      <span>or sign up with</span>
+    </div>
+
+    <div class="social">
+      <button class="social__btn social__btn--gg" aria-label="Sign up with Google">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M21.8 10.2H12v3.7h5.7c-.5 2.6-2.8 4.5-5.7 4.5-3.3 0-6-2.7-6-6s2.7-6 6-6c1.5 0 2.9.6 4 1.5l2.8-2.8C17.1 3.6 14.7 2.5 12 2.5 6.7 2.5 2.5 6.7 2.5 12S6.7 21.5 12 21.5c5.8 0 9.8-4.1 9.8-9.9 0-.8-.1-1.5-.2-2.4z"
+          />
+        </svg>
+        <span>Google</span>
+      </button>
+    </div>
+
+    <div class="card__footer">
+      <p class="card__signin">
+        Already a member? <a routerLink="/login" class="link link--accent">Sign In</a>
+      </p>
+    </div>
+    @if (signupSuccess) {
+      <div class="success-message">Registration successful! Redirecting to login...</div>
+    }
+  </main>
+</div>
