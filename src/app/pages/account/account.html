@@ -1,0 +1,66 @@
+<div class="profile-page">
+  <!-- ── Sidebar ──────────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar__section">
+      <h3 class="sidebar__heading">Manage My Account</h3>
+      <ul class="sidebar__links">
+        <li>
+          <a
+            routerLink="/profile"
+            routerLinkActive="sidebar__link--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="sidebar__link"
+            >My Profile</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/address-book"
+            routerLinkActive="sidebar__link--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="sidebar__link"
+            >Address Book</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/payment"
+            routerLinkActive="sidebar__link--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="sidebar__link"
+            >My Payment Options</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar__section">
+      <h3 class="sidebar__heading">My Orders</h3>
+      <ul class="sidebar__links">
+        <li>
+          <a
+            routerLink="/orders/returns"
+            routerLinkActive="sidebar__link--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="sidebar__link"
+            >My Returns</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/orders/cancellations"
+            routerLinkActive="sidebar__link--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="sidebar__link"
+            >My Cancellations</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar__section">
+      <h3 class="sidebar__heading sidebar__heading--single">My WishList</h3>
+    </div>
+  </aside>
+  <ng-content />
+</div>

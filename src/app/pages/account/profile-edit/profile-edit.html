@@ -1,0 +1,251 @@
+<!-- profile-edit.component.html -->
+
+<app-account>
+  <!-- ── Main form ─────────────────────────────────────────────────────────── -->
+  <main class="profile-form">
+    <h2 class="profile-form__title">Edit Your Profile</h2>
+
+    <!-- Feedback messages -->
+    @if (saveSuccess()) {
+      <div class="message message--success">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+        Profile updated successfully!
+      </div>
+    }
+    @if (error()) {
+      <div class="message message--error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        {{ error() }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <!-- ── Avatar upload ─────────────────────────────────────────────── -->
+      <div class="avatar-section">
+        <div class="avatar-preview">
+          @if (avatarPreview()) {
+            <img [src]="avatarPreview()" alt="Profile photo" />
+          } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          }
+        </div>
+        <label class="avatar-upload" for="avatarInput">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          Change Photo
+        </label>
+        <input
+          id="avatarInput"
+          type="file"
+          accept
+          class="avatar-upload__input"
+          (change)="onAvatarChange($event)"
+        />
+      </div>
+
+      <!-- ── Row: First Name + Last Name ──────────────────────────────── -->
+      <div class="form__row">
+        <div class="field">
+          <label class="field__label" for="firstName">First Name</label>
+          <input
+            id="firstName"
+            type="text"
+            class="field__input"
+            formControlName="firstName"
+            placeholder="John"
+            [class.field__input--error]="
+              form.get('firstName')?.invalid && form.get('firstName')?.touched
+            "
+          />
+          @if (form.get('firstName')?.invalid && form.get('firstName')?.touched) {
+            <span class="field__error">First name is required</span>
+          }
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="lastName">Last Name</label>
+          <input
+            id="lastName"
+            type="text"
+            class="field__input"
+            formControlName="lastName"
+            placeholder="Doe"
+            [class.field__input--error]="
+              form.get('lastName')?.invalid && form.get('lastName')?.touched
+            "
+          />
+          @if (form.get('lastName')?.invalid && form.get('lastName')?.touched) {
+            <span class="field__error">Last name is required</span>
+          }
+        </div>
+      </div>
+
+      <!-- ── Row: Username + Email ─────────────────────────────────────── -->
+      <div class="form__row">
+        <div class="field">
+          <label class="field__label" for="username">Username</label>
+          <div class="field__wrap">
+            <span class="field__prefix">@</span>
+            <input
+              id="username"
+              type="text"
+              class="field__input field__input--prefixed"
+              formControlName="username"
+              placeholder="johndoe"
+              [class.field__input--error]="
+                form.get('username')?.invalid && form.get('username')?.touched
+              "
+            />
+          </div>
+          @if (form.get('username')?.invalid && form.get('username')?.touched) {
+            <span class="field__error">Username must be at least 3 characters</span>
+          }
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            class="field__input"
+            formControlName="email"
+            placeholder="you@example.com"
+            [class.field__input--error]="form.get('email')?.invalid && form.get('email')?.touched"
+          />
+          @if (form.get('email')?.invalid && form.get('email')?.touched) {
+            <span class="field__error">Valid email is required</span>
+          }
+        </div>
+      </div>
+
+      <!-- ── Row: Date of Birth + Role ────────────────────────────────── -->
+      <div class="form__row">
+        <div class="field">
+          <label class="field__label" for="dateOfBirth">Date of Birth</label>
+          <input
+            id="dateOfBirth"
+            type="date"
+            class="field__input field__input--date"
+            formControlName="dateOfBirth"
+          />
+        </div>
+      </div>
+
+      <!-- ── Password Changes ──────────────────────────────────────────── -->
+      <div class="section-divider">
+        <span>Password Changes</span>
+      </div>
+
+      <div formGroupName="passwords" class="passwords-group">
+        <!-- Current Password -->
+        <div class="field">
+          <div class="field__wrap">
+            <input
+              id="currentPassword"
+              [type]="showCurrentPw() ? 'text' : 'password'"
+              class="field__input"
+              formControlName="currentPassword"
+              placeholder="Current Password"
+            />
+            <button
+              type="button"
+              class="field__toggle"
+              (click)="togglePw('current')"
+              aria-label="Toggle current password"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- New Password -->
+        <div class="field">
+          <div class="field__wrap">
+            <input
+              id="newPassword"
+              [type]="showNewPw() ? 'text' : 'password'"
+              class="field__input"
+              formControlName="newPassword"
+              placeholder="New Password"
+              [class.field__input--error]="
+                pw.get('newPassword')?.invalid && pw.get('newPassword')?.touched
+              "
+            />
+            <button
+              type="button"
+              class="field__toggle"
+              (click)="togglePw('new')"
+              aria-label="Toggle new password"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+          @if (pw.get('newPassword')?.invalid && pw.get('newPassword')?.touched) {
+            <span class="field__error">Password must be at least 6 characters</span>
+          }
+        </div>
+
+        <!-- Confirm New Password -->
+        <div class="field">
+          <div class="field__wrap">
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPw() ? 'text' : 'password'"
+              class="field__input"
+              formControlName="confirmPassword"
+              placeholder="Confirm New Password"
+              [class.field__input--error]="
+                pw.hasError('passwordMismatch') && pw.get('confirmPassword')?.touched
+              "
+            />
+            <button
+              type="button"
+              class="field__toggle"
+              (click)="togglePw('confirm')"
+              aria-label="Toggle confirm password"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+          @if (pw.hasError('passwordMismatch') && pw.get('confirmPassword')?.touched) {
+            <span class="field__error">Passwords do not match</span>
+          }
+        </div>
+      </div>
+
+      <!-- ── Actions ───────────────────────────────────────────────────── -->
+      <div class="form__actions">
+        <button type="button" class="btn btn--ghost" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn--primary" [disabled]="form.invalid || isLoading()">
+          @if (isLoading()) {
+            <span>Saving...</span>
+          } @else {
+            <span>Save Changes</span>
+          }
+        </button>
+      </div>
+    </form>
+  </main>
+</app-account>
