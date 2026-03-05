@@ -5,10 +5,10 @@ export interface IUserResponse {
   lastName: string;
   username: string;
   role: string;
-  dateofBirth: Date;
+  dateOfBirth: string;
   imageUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  upstringdAt: string;
 }
 
 export interface IUserRequest {
@@ -17,6 +17,6 @@ export interface IUserRequest {
   lastName: string;
   username: string;
   password: string;
-  dateofBirth?: Date;
+  dateOfBirth?: string;
   imageUrl?: string;
 }

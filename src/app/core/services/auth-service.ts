@@ -70,7 +70,10 @@ export class AuthService {
             username: res.user.username,
             email: res.user.email,
             firstName: res.user.firstName,
+            lastName: res.user.lastName,
             role: res.user.role,
+            dateOfBirth: res.user?.dateOfBirth,
+            imageUrl: res.user?.imageUrl,
           };
           this.persistUser(user);
         }
@@ -113,6 +116,10 @@ export class AuthService {
   private persistUser(user: IUser): void {
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
     this._currentUser.set(user);
+  }
+
+  updateUser(user: IUser): void {
+    this.persistUser(user);
   }
 
   private removeUser(): void {
