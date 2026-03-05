@@ -1,0 +1,120 @@
+$bg: #283044;
+$text-color: #ffffff;
+$nav-color: #c5c8d0;
+$search-bg: #2c3348;
+$search-border: #3a4060;
+$icon-size: 20px;
+$header-height: 52px;
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $bg;
+  height: $header-height;
+  padding: 0 24px;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  &__logo {
+    color: $text-color;
+    font-weight: 700;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    a {
+      color: $nav-color;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+      cursor: pointer;
+
+      &:hover,
+      &.active {
+        color: $text-color;
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__search {
+    display: flex;
+    align-items: center;
+    background-color: $search-bg;
+    border: 1px solid $search-border;
+    border-radius: 6px;
+    padding: 0 10px;
+    width: 340px;
+    height: 34px;
+
+    input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: $text-color;
+      font-size: 0.875rem;
+
+      &::placeholder {
+        color: #6b7280;
+      }
+    }
+
+    &-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(0.5);
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: white;
+
+    img {
+      width: $icon-size;
+      height: $icon-size;
+      filter: brightness(0) invert(1);
+    }
+
+    &:hover img {
+      opacity: 0.75;
+    }
+  }
+}

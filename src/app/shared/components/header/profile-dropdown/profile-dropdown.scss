@@ -1,0 +1,269 @@
+// profile-dropdown.component.scss
+// Matches the Fake Store design system (teal palette, DM Sans, Playfair Display)
+
+// ─── Tokens (mirror your global variables) ──────────────────────────────────
+$teal: #008174;
+$teal-hover: rgba(0, 129, 116, 0.08);
+$blue-border: #3bbcd6;
+$text-dark: #1a1f2e;
+$text-mid: #5a6278;
+$text-light: #9aa3bb;
+$white: #ffffff;
+$danger: #e74c3c;
+$danger-bg: #fff5f5;
+$font-body: 'DM Sans', system-ui, sans-serif;
+$font-display: 'Playfair Display', Georgia, serif;
+$radius: 12px;
+$shadow:
+  0 12px 40px rgba(0, 0, 0, 0.1),
+  0 2px 12px rgba(0, 0, 0, 0.06);
+
+// ─── Wrapper ─────────────────────────────────────────────────────────────────
+.profile-dropdown {
+  position: relative;
+  display: inline-flex;
+  font-family: $font-body;
+}
+
+// ─── Trigger button — no colors at rest ─────────────────────────────────────
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  padding: 5px 10px 5px 5px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  outline: none;
+
+  // No colors on hover either — just a very subtle neutral tint
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $teal;
+    outline-offset: 2px;
+  }
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: white; // neutral grey — no teal at rest
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__caret {
+    width: 14px;
+    height: 14px;
+    color: $text-light; // neutral grey — no teal at rest
+    flex-shrink: 0;
+    transition:
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.2s;
+
+    // Only show teal caret when dropdown is open
+    .profile-dropdown--open & {
+      transform: rotate(180deg);
+      // color: $teal;
+    }
+  }
+}
+
+// ─── Dropdown panel ──────────────────────────────────────────────────────────
+.dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 230px;
+  background: $white;
+  border: 1.5px solid #e8edf5;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  padding: 6px;
+  z-index: 1000;
+
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  pointer-events: none;
+  transform-origin: top right;
+  transition:
+    opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+
+  .profile-dropdown--open & {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+  }
+
+  // ── Header ──────────────────────────────────────────────────────────────
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px 12px;
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: $teal;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  &__display-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $text-dark;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__username {
+    font-size: 0.78rem;
+    font-weight: 500;
+    // color: $teal; // teal only INSIDE the open dropdown
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #008174;
+    border: 1.5px solid #008174;
+    border-radius: 4px;
+    padding: 1px 8px;
+    width: fit-content;
+    line-height: 1.6;
+  }
+
+  // ── Divider ─────────────────────────────────────────────────────────────
+  &__divider {
+    height: 1px;
+    background: #eef1f7;
+    margin: 2px 4px;
+  }
+
+  // ── Menu items ──────────────────────────────────────────────────────────
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: $font-body;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: $text-mid;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      background 0.15s,
+      color 0.15s;
+    text-align: left;
+    overflow: hidden;
+
+    svg:first-child {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: $text-light;
+      transition: color 0.15s;
+    }
+
+    span {
+      flex: 1;
+      min-width: 0;
+    }
+
+    // Profile item hover — #008174
+    &:hover:not(&--danger) {
+      background: $teal-hover;
+      color: $teal;
+
+      svg:first-child {
+        color: $teal;
+      }
+    }
+
+    // Arrow icon (profile item only)
+    &-arrow {
+      width: 14px !important;
+      height: 14px !important;
+      margin-left: auto;
+      flex-shrink: 0;
+      opacity: 0;
+      transform: translateX(-4px);
+      transition:
+        opacity 0.15s,
+        transform 0.15s;
+      color: $teal !important;
+    }
+
+    &:hover &-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    // Sign out hover — red
+    &--danger {
+      color: $text-mid;
+
+      svg:first-child {
+        color: $text-light;
+      }
+
+      &:hover {
+        background: $danger-bg;
+        color: $danger;
+        svg:first-child {
+          color: $danger;
+        }
+      }
+    }
+  }
+}
