@@ -1,35 +1,29 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, signal, effect, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth-service';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown';
+import { CartService } from '../../../core/services/cart';
+import { CartDrawerComponent } from '../../../pages/cart/cart-drawer/cart-drawer';
+import { SearchBarComponent } from './search-bar/search-bar';
 
 @Component({
   selector: 'app-header',
-  imports: [FormsModule, RouterLink, ProfileDropdownComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    ProfileDropdownComponent,
+    CartDrawerComponent,
+    SearchBarComponent,
+  ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class HeaderComponent {
-  readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
-  searchValue = '';
+  private readonly authService = inject(AuthService);
+  readonly cart = inject(CartService);
 
-  isAdmin(): boolean {
-    return this.authService.isAdmin();
-  }
-
-  onSearch(): void {
-    console.log('Search:', this.searchValue);
-  }
-
-  isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
-  }
-
-  authCheck(): void {
-    if (!this.isAuthenticated()) {
-      this.router.navigate(['/login']);
-    }
-  }
+  readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
+  readonly isAdmin = computed(() => this.authService.currentUser()?.role === 'admin');
+  readonly cartOpen = signal(false);
 }

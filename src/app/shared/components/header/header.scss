@@ -1,31 +1,67 @@
-$bg: #283044;
-$text-color: #ffffff;
-$nav-color: #c5c8d0;
-$search-bg: #2c3348;
-$search-border: #3a4060;
-$icon-size: 20px;
-$header-height: 52px;
+// header.component.scss
 
+$bg: #283044;
+$teal: #008174;
+$teal-glow: rgba(0, 129, 116, 0.25);
+$text-color: #ffffff;
+$nav-color: rgba(255, 255, 255, 0.65);
+$icon-size: 22px;
+$header-height: 58px;
+$font-body: 'DM Sans', system-ui, sans-serif;
+$font-display: 'Playfair Display', Georgia, serif;
+$mobile-bp: 768px;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  padding: 0;
+}
+
+// ── Header shell ──────────────────────────────────────────────────────────────
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: $bg;
   height: $header-height;
-  padding: 0 24px;
+  padding: 0 28px;
+  font-family: $font-body;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 200;
 
+  // ── Left ───────────────────────────────────────────────────────────────────
   &__left {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 36px;
+    flex-shrink: 0;
   }
 
   &__logo {
+    font-family: $font-display;
     color: $text-color;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     white-space: nowrap;
+    letter-spacing: -0.02em;
     cursor: pointer;
+
+    span {
+      color: $teal;
+    }
   }
 
   &__nav {
@@ -35,86 +71,272 @@ $header-height: 52px;
 
     a {
       color: $nav-color;
-      text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
+      font-weight: 500;
       transition: color 0.2s;
-      cursor: pointer;
+      position: relative;
+      white-space: nowrap;
 
-      &:hover,
-      &.active {
-        color: $text-color;
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: $teal;
+        border-radius: 99px;
+        transition: width 0.22s ease;
       }
+
+      &:hover {
+        color: $text-color;
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+
+    @media (max-width: $mobile-bp) {
+      display: none;
     }
   }
 
+  // ── Right ──────────────────────────────────────────────────────────────────
   &__right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+    flex: 1;
+    justify-content: flex-end;
   }
 
+  // ── Desktop search bar ─────────────────────────────────────────────────────
   &__search {
     display: flex;
     align-items: center;
-    background-color: $search-bg;
-    border: 1px solid $search-border;
-    border-radius: 6px;
-    padding: 0 10px;
-    width: 340px;
-    height: 34px;
+    gap: 8px;
+    background: #ffffff;
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    padding: 0 12px;
+    width: 280px;
+    height: 36px;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s,
+      width 0.3s ease;
+
+    &:focus-within {
+      border-color: $teal;
+      box-shadow: 0 0 0 3px $teal-glow;
+      width: 320px;
+    }
+
+    // responsive shrink
+    @media (max-width: 1100px) {
+      width: 220px;
+    }
+    @media (max-width: 900px) {
+      width: 180px;
+    }
+    @media (max-width: $mobile-bp) {
+      display: none;
+    } // hidden on mobile — toggle used instead
 
     input {
       flex: 1;
       background: none;
       border: none;
       outline: none;
-      color: $text-color;
+      color: #1a1f2e;
+      font-family: $font-body;
       font-size: 0.875rem;
+      min-width: 0;
 
       &::placeholder {
-        color: #6b7280;
-      }
-    }
-
-    &-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-
-      img {
-        width: 16px;
-        height: 16px;
-        filter: brightness(0) invert(0.5);
+        color: #9aa3bb;
       }
     }
   }
 
+  &__search-icon {
+    width: 15px;
+    height: 15px;
+    color: #9aa3bb;
+    flex-shrink: 0;
+    transition: color 0.2s;
+
+    .header__search:focus-within & {
+      color: $teal;
+    }
+  }
+
+  &__search-clear {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #eef1f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+
+    svg {
+      width: 10px;
+      height: 10px;
+      color: #9aa3bb;
+    }
+
+    &:hover {
+      background: #dde2ee;
+    }
+  }
+
+  // ── Actions ────────────────────────────────────────────────────────────────
   &__actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 4px;
   }
 
   &__action-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
     display: flex;
     align-items: center;
-    color: white;
+    justify-content: center;
+    color: $text-color;
+    position: relative;
+    transition: background 0.15s;
 
-    img {
+    svg {
       width: $icon-size;
       height: $icon-size;
-      filter: brightness(0) invert(1);
     }
 
-    &:hover img {
-      opacity: 0.75;
+    &:hover {
+      background: rgba(255, 255, 255, 0.09);
     }
+  }
+
+  // mobile search toggle — only visible on mobile
+  &__search-toggle {
+    display: none;
+
+    @media (max-width: $mobile-bp) {
+      display: flex;
+    }
+  }
+
+  &__signin {
+    width: auto;
+    padding: 0 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $text-color;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    height: 34px;
+    transition:
+      background 0.15s,
+      border-color 0.15s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  // ── Badge ──────────────────────────────────────────────────────────────────
+  &__badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 99px;
+    background: $teal;
+    color: #ffffff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    pointer-events: none;
+    box-shadow: 0 0 0 2px $bg;
+  }
+}
+
+// ── Mobile search bar (below header) ─────────────────────────────────────────
+.header__search--mobile {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: $header-height;
+  z-index: 199;
+  animation: slideDown 0.2s ease both;
+
+  @media (max-width: $mobile-bp) {
+    display: flex;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: #9aa3bb;
+    flex-shrink: 0;
+  }
+
+  input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: #1a1f2e;
+    font-family: $font-body;
+    font-size: 0.9rem;
+
+    &::placeholder {
+      color: #9aa3bb;
+    }
+  }
+
+  button {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #eef1f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 11px;
+      height: 11px;
+    }
+    &:hover {
+      background: #dde2ee;
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

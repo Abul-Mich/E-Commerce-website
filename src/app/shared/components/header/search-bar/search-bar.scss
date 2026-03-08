@@ -1,0 +1,198 @@
+// search-bar.component.scss
+
+$teal: #008174;
+$teal-glow: rgba(0, 129, 116, 0.2);
+$text-dark: #1a1f2e;
+$text-light: #9aa3bb;
+$white: #ffffff;
+$border: #eef1f7;
+$bg-header: #283044;
+$font-body: 'DM Sans', system-ui, sans-serif;
+$mobile-bp: 768px;
+
+:host {
+  display: contents; // doesn't affect layout — host is invisible
+}
+
+// ── Shared bar styles ─────────────────────────────────────────────────────────
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: $white;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 36px;
+  font-family: $font-body;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    width 0.28s ease;
+
+  &__icon {
+    width: 15px;
+    height: 15px;
+    color: $text-light;
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  &__input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: $text-dark;
+    font-family: $font-body;
+    font-size: 0.875rem;
+    min-width: 0;
+
+    &::placeholder {
+      color: $text-light;
+    }
+  }
+
+  &__clear {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: $border;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    svg {
+      width: 10px;
+      height: 10px;
+      color: $text-light;
+    }
+    &:hover {
+      background: #dde2ee;
+    }
+  }
+
+  &__close {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: $text-light;
+    flex-shrink: 0;
+    transition: background 0.15s;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+    &:hover {
+      background: $border;
+    }
+  }
+}
+
+// ── Desktop bar ───────────────────────────────────────────────────────────────
+.search-bar--desktop {
+  width: 280px;
+
+  &:focus-within,
+  &.search-bar--focused {
+    border-color: $teal;
+    box-shadow: 0 0 0 3px $teal-glow;
+    width: 320px;
+
+    .search-bar__icon {
+      color: $teal;
+    }
+  }
+
+  // shrink as viewport narrows
+  @media (max-width: 1100px) {
+    width: 220px;
+  }
+  @media (max-width: 960px) {
+    width: 180px;
+  }
+
+  // hide on mobile — toggle button takes over
+  @media (max-width: $mobile-bp) {
+    display: none;
+  }
+}
+
+// ── Mobile toggle button ──────────────────────────────────────────────────────
+.search-bar__mobile-toggle {
+  display: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: background 0.15s;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  @media (max-width: $mobile-bp) {
+    display: flex;
+  }
+}
+
+// ── Mobile expanded bar ───────────────────────────────────────────────────────
+.search-bar--mobile {
+  position: fixed;
+  top: 58px; // header height
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 52px;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1.5px solid $border;
+  background: $white;
+  padding: 0 16px;
+  z-index: 199;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  .search-bar__icon {
+    color: $text-light;
+  }
+  .search-bar__input {
+    font-size: 0.95rem;
+  }
+
+  // only visible on mobile
+  @media (min-width: calc($mobile-bp + 1px)) {
+    display: none;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

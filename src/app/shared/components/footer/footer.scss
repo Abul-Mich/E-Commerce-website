@@ -1,0 +1,299 @@
+// footer.component.scss
+
+$bg: #283044;
+$bg-light: #313d56;
+$teal: #008174;
+$teal-glow: rgba(0, 129, 116, 0.35);
+$white: #ffffff;
+$text-dim: rgba(255, 255, 255, 0.55);
+$text-muted: rgba(255, 255, 255, 0.35);
+$border: rgba(255, 255, 255, 0.08);
+$font-display: 'Playfair Display', Georgia, serif;
+$font-body: 'DM Sans', system-ui, sans-serif;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// ── Footer shell ──────────────────────────────────────────────────────────────
+.footer {
+  background: $bg;
+  font-family: $font-body;
+  position: relative;
+  overflow: hidden;
+
+  // subtle background texture
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 10% 90%, rgba(0, 129, 116, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 90% 10%, rgba(0, 129, 116, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+// ── Top accent line ───────────────────────────────────────────────────────────
+.footer__accent {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, $teal, rgba(0, 129, 116, 0.3), transparent);
+}
+
+// ── Main grid ─────────────────────────────────────────────────────────────────
+.footer__inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 24px 40px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 40px 20px 28px;
+  }
+}
+
+// ── Brand column ──────────────────────────────────────────────────────────────
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer__logo {
+  display: inline-block;
+
+  &-text {
+    font-family: $font-display;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $white;
+    letter-spacing: -0.02em;
+
+    span {
+      color: $teal;
+    }
+  }
+}
+
+.footer__tagline {
+  font-size: 0.85rem;
+  color: $text-dim;
+  line-height: 1.65;
+  max-width: 280px;
+}
+
+// ── Social buttons ────────────────────────────────────────────────────────────
+.footer__socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.social-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid $border;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $text-dim;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.15s;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: $teal;
+    color: $white;
+    border-color: $teal;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px $teal-glow;
+  }
+}
+
+// ── Link columns ──────────────────────────────────────────────────────────────
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer__col-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $white;
+  position: relative;
+  padding-bottom: 10px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 24px;
+    height: 2px;
+    background: $teal;
+    border-radius: 99px;
+  }
+}
+
+.footer__links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer__link {
+  font-size: 0.85rem;
+  color: $text-dim;
+  transition:
+    color 0.18s,
+    padding-left 0.18s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  &::before {
+    content: '›';
+    color: $teal;
+    opacity: 0;
+    transition: opacity 0.18s;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  &:hover {
+    color: $white;
+    padding-left: 6px;
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+// ── Trust badges ──────────────────────────────────────────────────────────────
+.footer__badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  border-top: 1px solid $border;
+  border-bottom: 1px solid $border;
+  margin: 0 24px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    margin: 0 20px;
+  }
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 32px;
+  color: $text-dim;
+  font-size: 0.82rem;
+  font-weight: 500;
+  border-right: 1px solid $border;
+  transition: color 0.18s;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: $teal;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    color: $white;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid $border;
+    padding: 14px 16px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+// ── Bottom bar ────────────────────────────────────────────────────────────────
+.footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 24px 28px;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  @media (max-width: 520px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 20px 24px;
+  }
+}
+
+.footer__copy {
+  font-size: 0.78rem;
+  color: $text-muted;
+}
+
+.footer__legal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &-link {
+    font-size: 0.78rem;
+    color: $text-muted;
+    transition: color 0.18s;
+    &:hover {
+      color: $teal;
+    }
+  }
+
+  &-sep {
+    color: $text-muted;
+    font-size: 0.7rem;
+  }
+}

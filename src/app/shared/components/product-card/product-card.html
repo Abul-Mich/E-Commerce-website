@@ -1,0 +1,19 @@
+@let p = product();
+@if (p) {
+  <div class="product-card" (click)="onCardClick(p)">
+    <div class="image-container">
+      <img [src]="p.image" [alt]="p.title" class="product-image" />
+    </div>
+    <div class="product-content">
+      <h3 class="product-title">{{ p.title }}</h3>
+      <div class="review-container">
+        <span class="stars">⭐ {{ p.rating.rate }}</span>
+        <span class="review-count">({{ p.rating.count }} reviews)</span>
+      </div>
+      <div class="price-container">
+        <span class="price">${{ p.price.toFixed(2) }}</span>
+      </div>
+      <ng-content />
+    </div>
+  </div>
+}

@@ -1,0 +1,89 @@
+<!-- search-bar.component.html -->
+
+<!-- ── Desktop search bar ───────────────────────────────────────────────── -->
+<div class="search-bar search-bar--desktop" [class.search-bar--focused]="isFocused()">
+  <!-- Search icon -->
+  <svg
+    class="search-bar__icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <circle cx="11" cy="11" r="8" />
+    <path d="M21 21l-4.35-4.35" />
+  </svg>
+
+  <!-- Input -->
+  <input
+    type="text"
+    class="search-bar__input"
+    placeholder="Search products..."
+    [(ngModel)]="searchValue"
+    (ngModelChange)="onInput($event)"
+    (keyup.enter)="onSearch()"
+    (focus)="isFocused.set(true)"
+    (blur)="isFocused.set(false)"
+    aria-label="Search products"
+  />
+
+  <!-- Clear button -->
+  @if (searchValue) {
+    <button class="search-bar__clear" (click)="clear()" aria-label="Clear search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  }
+</div>
+
+<!-- ── Mobile toggle button (icon only) ─────────────────────────────────── -->
+<button class="search-bar__mobile-toggle" (click)="toggleMobile()" aria-label="Open search">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="11" cy="11" r="8" />
+    <path d="M21 21l-4.35-4.35" />
+  </svg>
+</button>
+
+<!-- ── Mobile expanded bar (rendered below header via position) ──────────── -->
+@if (mobileOpen()) {
+  <div class="search-bar search-bar--mobile">
+    <svg
+      class="search-bar__icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <path d="M21 21l-4.35-4.35" />
+    </svg>
+
+    <input
+      type="text"
+      class="search-bar__input"
+      placeholder="Search products..."
+      [(ngModel)]="searchValue"
+      (ngModelChange)="onInput($event)"
+      (keyup.enter)="onSearch()"
+      aria-label="Search products"
+    />
+
+    @if (searchValue) {
+      <button class="search-bar__clear" (click)="clear()" aria-label="Clear">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    }
+
+    <button class="search-bar__close" (click)="toggleMobile()" aria-label="Close search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+}

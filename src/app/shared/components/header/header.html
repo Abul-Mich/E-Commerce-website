@@ -1,6 +1,6 @@
 <header class="header">
   <div class="header__left">
-    <span class="header__logo" routerLink="/">Fake Store</span>
+    <span class="header__logo" routerLink="/">Fake<span>Store</span></span>
     <nav class="header__nav">
       <a routerLink="/products">Products</a>
       @if (isAdmin()) {
@@ -12,12 +12,7 @@
   </div>
 
   <div class="header__right">
-    <div class="header__search">
-      <input type="text" placeholder="Value" [(ngModel)]="searchValue" />
-      <button class="header__search-btn" (click)="onSearch()">
-        <img src="icons/search-icon.svg" alt="Search" />
-      </button>
-    </div>
+    <app-search-bar />
 
     <div class="header__actions">
       @if (isAuthenticated()) {
@@ -26,9 +21,13 @@
         <button class="header__action-btn" routerLink="/login">Sign In</button>
       }
 
-      <button class="header__action-btn">
+      <button class="header__action-btn" (click)="cartOpen.set(!cartOpen())" aria-label="Open cart">
         <img src="icons/cart-icon.svg" alt="Cart" />
+        @if (cart.totalItems() > 0) {
+          <span class="header__badge">{{ cart.totalItems() }}</span>
+        }
       </button>
+      <app-cart-drawer [isOpen]="cartOpen()" (closed)="cartOpen.set(false)" />
     </div>
   </div>
 </header>
