@@ -35,6 +35,7 @@ export class ProfileEditComponent {
   private readonly destroyRef = inject(DestroyRef);
 
   // ── UI state ──────────────────────────────────────────────────────────────
+  private readonly storedUser = this.getStoredUser();
   readonly isLoading = signal(false);
   readonly saveSuccess = signal(false);
   readonly error = signal('');
@@ -43,7 +44,8 @@ export class ProfileEditComponent {
   readonly showNewPw = signal(false);
   readonly showConfirmPw = signal(false);
 
-  // ── Load stored user ──────────────────────────────────────────────────────
+  // ── Load stored user — called ONCE ────────────────────────────────────────
+
   private getStoredUser() {
     try {
       const raw = localStorage.getItem('auth_user');
@@ -54,19 +56,16 @@ export class ProfileEditComponent {
   }
 
   private getStoredImage(): string {
-    return this.getStoredUser()?.image || '';
+    return this.storedUser?.image || '';
   }
 
   // ── Form ──────────────────────────────────────────────────────────────────
   readonly form = this.fb.group({
-    firstName: [this.getStoredUser()?.firstName ?? '', [Validators.required]],
-    lastName: [this.getStoredUser()?.lastName ?? '', [Validators.required]],
-    username: [
-      this.getStoredUser()?.username ?? '',
-      [Validators.required, Validators.minLength(3)],
-    ],
-    email: [this.getStoredUser()?.email ?? '', [Validators.required, Validators.email]],
-    dateOfBirth: [this.getStoredUser()?.dateOfBirth.split('T')[0] ?? ''],
+    firstName: [this.storedUser?.firstName ?? '', [Validators.required]],
+    lastName: [this.storedUser?.lastName ?? '', [Validators.required]],
+    username: [this.storedUser?.username ?? '', [Validators.required, Validators.minLength(3)]],
+    email: [this.storedUser?.email ?? '', [Validators.required, Validators.email]],
+    dateOfBirth: [this.storedUser?.dateOfBirth?.slice(0, 10) ?? ''], // ← strip time part
 
     passwords: this.fb.group(
       {
@@ -120,7 +119,7 @@ export class ProfileEditComponent {
       .subscribe({
         next: (updatedUser: IUserResponse) => {
           // Persist updated user back to localStorage
-          const current = this.getStoredUser();
+          const current = this.storedUser;
           localStorage.setItem('auth_user', JSON.stringify({ ...current, ...updatedUser }));
 
           this.saveSuccess.set(true);
