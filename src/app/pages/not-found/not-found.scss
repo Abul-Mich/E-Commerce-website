@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap');
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+// Variables
+$bg: #283044;
+$surface: #1e2535;
+$accent: #008174;
+$text: #ebf5ee;
+$muted: #7a9d88;
+$border: #374357;
+
+.not-found {
+  position: relative;
+  min-height: 100vh;
+  background-color: $bg;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+  padding: 2rem;
+}
+
+// Vertical grid lines background
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 0;
+
+  .grid-line {
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, $border 20%, $border 80%, transparent);
+    opacity: 0.5;
+  }
+}
+
+// Giant 404 glitch
+.glitch-wrapper {
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+  margin-bottom: -1rem;
+}
+
+.glitch {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(10rem, 28vw, 22rem);
+  color: $surface;
+  letter-spacing: -0.02em;
+  position: relative;
+  display: block;
+  -webkit-text-stroke: 1px $border;
+  user-select: none;
+
+  &::before,
+  &::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-text-stroke: 1px $border;
+  }
+
+  &::before {
+    color: transparent;
+    -webkit-text-stroke: 2px $accent;
+    clip-path: polygon(0 25%, 100% 25%, 100% 40%, 0 40%);
+    transform: translateX(-4px);
+    animation: glitch-top 4s infinite linear;
+    opacity: 0.6;
+  }
+
+  &::after {
+    color: transparent;
+    -webkit-text-stroke: 2px #ebf5ee;
+    clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+    transform: translateX(4px);
+    animation: glitch-bottom 4s infinite linear;
+    opacity: 0.5;
+  }
+}
+
+// Content block
+.content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 520px;
+}
+
+.label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: $accent;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  color: $text;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  margin: 0 0 1.25rem;
+}
+
+.description {
+  font-size: 1rem;
+  font-weight: 300;
+  color: $muted;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+// CTA button
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 2rem;
+  background: $accent;
+  color: $bg;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 2px solid $accent;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    gap 0.2s;
+
+  &__arrow {
+    transition: transform 0.2s;
+  }
+
+  &:hover {
+    background: transparent;
+    color: $text;
+    gap: 1.25rem;
+
+    .btn__arrow {
+      transform: translateX(4px);
+    }
+  }
+}
+
+// Glitch animations
+@keyframes glitch-top {
+  0%,
+  90%,
+  100% {
+    transform: translateX(-4px);
+    clip-path: polygon(0 25%, 100% 25%, 100% 40%, 0 40%);
+  }
+  92% {
+    transform: translateX(6px);
+    clip-path: polygon(0 20%, 100% 20%, 100% 38%, 0 38%);
+  }
+  94% {
+    transform: translateX(-2px);
+    clip-path: polygon(0 28%, 100% 28%, 100% 42%, 0 42%);
+  }
+}
+
+@keyframes glitch-bottom {
+  0%,
+  90%,
+  100% {
+    transform: translateX(4px);
+    clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+  }
+  92% {
+    transform: translateX(-6px);
+    clip-path: polygon(0 62%, 100% 62%, 100% 78%, 0 78%);
+  }
+  94% {
+    transform: translateX(2px);
+    clip-path: polygon(0 58%, 100% 58%, 100% 72%, 0 72%);
+  }
+}

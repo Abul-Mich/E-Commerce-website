@@ -1,0 +1,94 @@
+@if (product()) {
+  <main class="product-container">
+    <div class="product-layout">
+      <!-- Left: Product Image -->
+      <div class="image-section">
+        <div class="main-image-container">
+          <img [src]="product()!.image" [alt]="product()!.title" class="main-image" />
+        </div>
+      </div>
+
+      <!-- Right: Product Details -->
+      <div class="details-section">
+        <!-- Title & Category -->
+        <p class="product-category">{{ product()!.category }}</p>
+        <h1 class="product-title">{{ product()!.title }}</h1>
+
+        <!-- Rating -->
+        <div class="rating-section">
+          <div class="stars">
+            @for (i of [1, 2, 3, 4, 5]; track i) {
+              <span class="star" [class.filled]="i <= product()!.rating.rate">★</span>
+            }
+          </div>
+          <span class="rating-text">
+            {{ product()!.rating.rate }} ({{ product()!.rating.count }} reviews)
+          </span>
+        </div>
+
+        <!-- Description -->
+        <p class="description">{{ product()!.description }}</p>
+
+        <!-- Price -->
+        <div class="price-section">
+          <span class="price">{{ formatPrice(product()!.price) }}</span>
+        </div>
+
+        <!-- Quantity Selector -->
+        <div class="quantity-section">
+          <label class="section-label">Quantity</label>
+          <div class="quantity-control">
+            <button
+              class="qty-btn"
+              (click)="decrementQuantity()"
+              [disabled]="quantity() <= 1"
+              aria-label="Decrease quantity"
+            >
+              −
+            </button>
+            <label class="qty-input"> {{ quantity() }}</label>
+            <button
+              class="qty-btn"
+              (click)="incrementQuantity()"
+              [disabled]="isCartFull()"
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Add to Cart -->
+        <button
+          class="add-to-cart-btn"
+          (click)="addToCart()"
+          [attr.aria-label]="'Add ' + quantity() + ' item(s) to cart'"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+    @if (similarProducts().length > 0) {
+      <section class="similar-products">
+        <h2 class="similar-products__title">You Might Also Like</h2>
+
+        <div class="similar-products__grid">
+          @for (product of similarProducts(); track product.id) {
+            <app-product-card [product]="product" />
+          }
+        </div>
+      </section>
+    }
+  </main>
+
+  <!-- Notification Toast -->
+  @if (showNotification()) {
+    <div class="notification" role="status" aria-live="polite">
+      {{ notificationMessage() }}
+    </div>
+  }
+} @else {
+  <div class="loading-state" role="status">
+    <p>Loading product...</p>
+  </div>
+}

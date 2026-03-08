@@ -1,0 +1,14 @@
+<app-hero-banner />
+
+<div class="home__body">
+  <app-filter
+    [categories]="categories()"
+    [maxPrice]="maxPrice()"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <div class="home__main" id="products-section">
+    <app-sort-banner />
+    <app-products [filters]="activeFilters()" />
+  </div>
+</div>

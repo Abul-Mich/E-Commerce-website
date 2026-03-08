@@ -1,0 +1,637 @@
+// checkout.component.scss
+
+$teal: #008174;
+$teal-light: rgba(0, 129, 116, 0.08);
+$teal-focus: rgba(0, 129, 116, 0.15);
+$text-dark: #1a1f2e;
+$text-mid: #5a6278;
+$text-light: #9aa3bb;
+$white: #ffffff;
+$border: #eef1f7;
+$danger: #e74c3c;
+$danger-bg: #fff5f5;
+$bg-page: #e8f5f0;
+$font-display: 'Playfair Display', Georgia, serif;
+$font-body: 'DM Sans', system-ui, sans-serif;
+$radius: 12px;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+.checkout-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  font-family: $font-body;
+  background: $bg-page;
+  min-height: 100vh;
+  animation: fadeIn 0.35s ease both;
+
+  @media (max-width: 600px) {
+    padding: 20px 14px 48px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Breadcrumb ────────────────────────────────────────────────────────────────
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: $text-light;
+  margin-bottom: 20px;
+
+  &__link {
+    color: $text-light;
+    transition: color 0.15s;
+    &:hover {
+      color: $teal;
+    }
+  }
+  &__sep {
+    color: $text-light;
+  }
+  &__current {
+    color: $text-mid;
+    font-weight: 500;
+  }
+}
+
+// ── Title ─────────────────────────────────────────────────────────────────────
+.checkout-page__title {
+  font-family: $font-display;
+  font-size: 2rem;
+  font-weight: 700;
+  color: $text-dark;
+  margin-bottom: 28px;
+  letter-spacing: -0.02em;
+}
+
+// ── Success state ─────────────────────────────────────────────────────────────
+.success-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px 24px;
+  background: $white;
+  border-radius: 18px;
+  text-align: center;
+  animation: scaleIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  &__icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba($teal, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 36px;
+      height: 36px;
+      color: $teal;
+    }
+  }
+
+  h2 {
+    font-family: $font-display;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $text-dark;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: $text-light;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// ── Layout ────────────────────────────────────────────────────────────────────
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Left column ───────────────────────────────────────────────────────────────
+.checkout-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+// ── Message ───────────────────────────────────────────────────────────────────
+.message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+
+  svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+  }
+
+  &--error {
+    background: $danger-bg;
+    border: 1px solid rgba($danger, 0.25);
+    color: $danger;
+  }
+}
+
+// ── Section ───────────────────────────────────────────────────────────────────
+.checkout-section {
+  background: $white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 600px) {
+    padding: 20px 16px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: $font-display;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid $border;
+  }
+
+  &__step {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: $teal;
+    color: $white;
+    font-family: $font-body;
+    font-size: 0.82rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+}
+
+// ── No cards ──────────────────────────────────────────────────────────────────
+.no-cards {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: #fafcff;
+  border-radius: 10px;
+  border: 1.5px dashed $border;
+
+  p {
+    font-size: 0.88rem;
+    color: $text-light;
+  }
+}
+
+// ── Card list ─────────────────────────────────────────────────────────────────
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.card-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1.8px solid $border;
+  border-radius: $radius;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    box-shadow 0.2s;
+
+  &:hover {
+    border-color: rgba($teal, 0.4);
+    background: $teal-light;
+  }
+
+  &--selected {
+    border-color: $teal;
+    background: $teal-light;
+    box-shadow: 0 0 0 3px rgba($teal, 0.1);
+  }
+
+  &__radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid $border;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.2s;
+
+    .card-option--selected & {
+      border-color: $teal;
+    }
+  }
+
+  &__radio-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $teal;
+  }
+
+  &__logo {
+    width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  &__number {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $text-dark;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__meta {
+    font-size: 0.76rem;
+    color: $text-light;
+  }
+
+  &__default {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $teal;
+    border: 1.5px solid $teal;
+    border-radius: 4px;
+    padding: 1px 7px;
+    flex-shrink: 0;
+  }
+}
+
+// ── Add card link ─────────────────────────────────────────────────────────────
+.add-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: $teal;
+  transition: opacity 0.15s;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
+// ── Order items ───────────────────────────────────────────────────────────────
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid $border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__image {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f4f6fb;
+    flex-shrink: 0;
+    border: 1px solid $border;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: $text-dark;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 3px;
+  }
+
+  &__qty {
+    font-size: 0.78rem;
+    color: $text-light;
+  }
+
+  &__total {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: $teal;
+    flex-shrink: 0;
+  }
+}
+
+// ── Mini logos ────────────────────────────────────────────────────────────────
+.mini-logo {
+  font-size: 0.78rem;
+  font-weight: 900;
+
+  &--visa {
+    color: #1a1f6e;
+    font-style: italic;
+    font-size: 1rem;
+  }
+  &--amex {
+    color: #0a4a8a;
+    letter-spacing: 0.1em;
+  }
+  &--other {
+    color: $text-light;
+  }
+
+  &--mc {
+    display: flex;
+    align-items: center;
+
+    span {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: block;
+
+      &:first-child {
+        background: #eb001b;
+        margin-right: -7px;
+        z-index: 1;
+      }
+      &:last-child {
+        background: #f79e1b;
+      }
+    }
+  }
+}
+
+// ── Summary sidebar ───────────────────────────────────────────────────────────
+.checkout-summary {
+  background: $white;
+  border-radius: 16px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__title {
+    font-family: $font-display;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $text-dark;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid $border;
+  }
+
+  &__hint {
+    font-size: 0.78rem;
+    color: $text-light;
+    text-align: center;
+  }
+}
+
+.summary-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: $text-mid;
+
+  small {
+    color: $text-light;
+    font-size: 0.78rem;
+  }
+
+  &--total {
+    font-size: 1rem;
+    color: $text-dark;
+    font-weight: 600;
+    padding-top: 12px;
+    border-top: 1.5px solid $border;
+
+    strong {
+      font-size: 1.2rem;
+      color: $teal;
+    }
+  }
+}
+
+.free-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $teal;
+  background: rgba($teal, 0.1);
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+// ── Selected payment recap ────────────────────────────────────────────────────
+.selected-payment {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: $teal-light;
+  border: 1.5px solid rgba($teal, 0.2);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $text-dark;
+  letter-spacing: 0.04em;
+
+  svg {
+    width: 17px;
+    height: 17px;
+    color: $teal;
+    flex-shrink: 0;
+  }
+}
+
+// ── Security note ─────────────────────────────────────────────────────────────
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 0.75rem;
+  color: $text-light;
+
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-family: $font-body;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    box-shadow 0.18s,
+    transform 0.15s;
+  text-decoration: none;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s;
+  }
+  &:hover:not(:disabled) svg {
+    transform: translateX(3px);
+  }
+  &:active:not(:disabled) {
+    transform: scale(0.975);
+  }
+
+  &--primary {
+    background: $teal;
+    color: $white;
+    box-shadow: 0 4px 14px rgba($teal, 0.3);
+
+    &:hover:not(:disabled) {
+      background: darken($teal, 6%);
+      box-shadow: 0 6px 18px rgba($teal, 0.4);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: $text-mid;
+    border: 1.5px solid $border;
+    &:hover {
+      border-color: $text-mid;
+      color: $text-dark;
+    }
+  }
+
+  &--full {
+    width: 100%;
+  }
+  &--sm {
+    padding: 8px 16px;
+    font-size: 0.83rem;
+  }
+}

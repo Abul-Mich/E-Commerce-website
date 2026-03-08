@@ -1,0 +1,211 @@
+<!-- checkout.component.html -->
+
+<div class="checkout-page">
+  <!-- ── Breadcrumb ────────────────────────────────────────────────────────── -->
+  <nav class="breadcrumb">
+    <a routerLink="/" class="breadcrumb__link">Home</a>
+    <span class="breadcrumb__sep">/</span>
+    <a routerLink="/cart" class="breadcrumb__link">Cart</a>
+    <span class="breadcrumb__sep">/</span>
+    <span class="breadcrumb__current">Checkout</span>
+  </nav>
+
+  <h1 class="checkout-page__title">Checkout</h1>
+
+  <!-- ── Success state ─────────────────────────────────────────────────────── -->
+  @if (success()) {
+    <div class="success-state">
+      <div class="success-state__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </div>
+      <h2>Order Placed!</h2>
+      <p>Redirecting to your order...</p>
+    </div>
+  }
+
+  @if (!success()) {
+    <div class="checkout-layout">
+      <!-- ── Left column ──────────────────────────────────────────────────── -->
+      <div class="checkout-left">
+        <!-- Error -->
+        @if (error()) {
+          <div class="message message--error">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            {{ error() }}
+          </div>
+        }
+
+        <!-- ── Payment Method ──────────────────────────────────────────────── -->
+        <section class="checkout-section">
+          <h2 class="checkout-section__title">
+            <span class="checkout-section__step">1</span>
+            Payment Method
+          </h2>
+
+          @if (cards().length === 0) {
+            <div class="no-cards">
+              <p>No payment methods saved.</p>
+              <a routerLink="/payment" class="btn btn--ghost btn--sm"> Add a Card </a>
+            </div>
+          }
+
+          @if (cards().length > 0) {
+            <div class="card-list">
+              @for (card of cards(); track card.id) {
+                <div
+                  class="card-option"
+                  [class.card-option--selected]="selectedCardId() === card.id"
+                  (click)="selectCard(card.id)"
+                  role="radio"
+                  [attr.aria-checked]="selectedCardId() === card.id"
+                >
+                  <!-- Radio indicator -->
+                  <div class="card-option__radio">
+                    @if (selectedCardId() === card.id) {
+                      <div class="card-option__radio-dot"></div>
+                    }
+                  </div>
+
+                  <!-- Card type logo -->
+                  <div class="card-option__logo">
+                    @switch (card.type) {
+                      @case ('visa') {
+                        <span class="mini-logo mini-logo--visa">VISA</span>
+                      }
+                      @case ('mastercard') {
+                        <div class="mini-logo mini-logo--mc"><span></span><span></span></div>
+                      }
+                      @case ('amex') {
+                        <span class="mini-logo mini-logo--amex">AMEX</span>
+                      }
+                      @default {
+                        <span class="mini-logo mini-logo--other">CARD</span>
+                      }
+                    }
+                  </div>
+
+                  <!-- Card info -->
+                  <div class="card-option__info">
+                    <span class="card-option__number">{{ maskedNumber(card.last4) }}</span>
+                    <span class="card-option__meta"
+                      >{{ card.holder }} · Exp {{ card.expMonth }}/{{ card.expYear }}</span
+                    >
+                  </div>
+
+                  <!-- Default badge -->
+                  @if (card.isDefault) {
+                    <span class="card-option__default">Default</span>
+                  }
+                </div>
+              }
+            </div>
+
+            <a routerLink="/payment" class="add-card-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Add a new card
+            </a>
+          }
+        </section>
+
+        <!-- ── Order Items ─────────────────────────────────────────────────── -->
+        <section class="checkout-section">
+          <h2 class="checkout-section__title">
+            <span class="checkout-section__step">2</span>
+            Review Items
+          </h2>
+
+          <div class="order-items">
+            @for (item of cart.items(); track item.productId) {
+              <div class="order-item">
+                <div class="order-item__image">
+                  <img
+                    [src]="item.image"
+                    [alt]="item.name"
+                    (error)="$any($event.target).src = 'icons/placeholder.svg'"
+                  />
+                </div>
+                <div class="order-item__info">
+                  <p class="order-item__name">{{ item.name }}</p>
+                  <p class="order-item__qty">Qty: {{ item.quantity }}</p>
+                </div>
+                <span class="order-item__total"
+                  >${{ formatPrice(item.price * item.quantity) }}</span
+                >
+              </div>
+            }
+          </div>
+        </section>
+      </div>
+
+      <!-- ── Right: Summary ────────────────────────────────────────────────── -->
+      <aside class="checkout-summary">
+        <h2 class="checkout-summary__title">Order Summary</h2>
+
+        <div class="summary-lines">
+          <div class="summary-line">
+            <span
+              >Subtotal <small>({{ cart.totalItems() }} items)</small></span
+            >
+            <span>${{ formatPrice(cart.totalPrice()) }}</span>
+          </div>
+          <div class="summary-line">
+            <span>Shipping</span>
+            @if (shipping() === 0) {
+              <span class="free-tag">FREE</span>
+            } @else {
+              <span>${{ formatPrice(shipping()) }}</span>
+            }
+          </div>
+          <div class="summary-line summary-line--total">
+            <span>Total</span>
+            <strong>${{ formatPrice(orderTotal()) }}</strong>
+          </div>
+        </div>
+
+        <!-- Selected payment recap -->
+        @if (selectedCard()) {
+          <div class="selected-payment">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+              <line x1="1" y1="10" x2="23" y2="10" />
+            </svg>
+            <span>{{ maskedNumber(selectedCard()!.last4) }}</span>
+          </div>
+        }
+
+        <button class="btn btn--primary btn--full" (click)="placeOrder()" [disabled]="!canOrder()">
+          @if (isLoading()) {
+            <span>Placing Order...</span>
+          } @else {
+            <span>Place Order</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          }
+        </button>
+
+        @if (!selectedCardId()) {
+          <p class="checkout-summary__hint">Select a payment method to continue</p>
+        }
+
+        <!-- Security note -->
+        <div class="security-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          <span>Your payment is secured and encrypted</span>
+        </div>
+      </aside>
+    </div>
+  }
+</div>

@@ -1,12 +1,9 @@
-// payment-options.component.ts
-
 import { Component, signal, computed } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AccountComponent } from '../account';
 import { AuthService } from '../../../core/services/auth-service';
-import { IUser } from '../../../models/user';
 
 export interface PaymentCard {
   id: string;
@@ -17,6 +14,8 @@ export interface PaymentCard {
   expYear: string;
   isDefault: boolean;
 }
+
+const CARDS_KEY = 'payment_cards';
 
 @Component({
   selector: 'app-payment-options',
@@ -35,26 +34,8 @@ export class PaymentOptionsComponent {
     return `${this.user?.firstName ?? ''} ${this.user?.lastName ?? ''}`.trim();
   }
 
-  readonly cards = signal<PaymentCard[]>([
-    {
-      id: '1',
-      type: 'visa',
-      last4: '4242',
-      holder: this.fullName,
-      expMonth: '08',
-      expYear: '2026',
-      isDefault: true,
-    },
-    {
-      id: '2',
-      type: 'mastercard',
-      last4: '8751',
-      holder: this.fullName,
-      expMonth: '03',
-      expYear: '2027',
-      isDefault: false,
-    },
-  ]);
+  // ── Load from localStorage instead of hardcoded mock ─────────────────────
+  readonly cards = signal<PaymentCard[]>(this.loadCards());
 
   readonly showAddForm = signal(false);
   readonly editingId = signal<string | null>(null);
@@ -64,7 +45,21 @@ export class PaymentOptionsComponent {
 
   readonly defaultCard = computed(() => this.cards().find((c) => c.isDefault) ?? null);
 
-  // ── Add / Edit form ───────────────────────────────────────────────────────
+  // ── localStorage helpers ──────────────────────────────────────────────────
+  private loadCards(): PaymentCard[] {
+    try {
+      const raw = localStorage.getItem(CARDS_KEY);
+      return raw ? (JSON.parse(raw) as PaymentCard[]) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private syncCards(cards: PaymentCard[]): void {
+    localStorage.setItem(CARDS_KEY, JSON.stringify(cards));
+  }
+
+  // ── Form ──────────────────────────────────────────────────────────────────
   readonly form = this.fb.group({
     holder: ['', [Validators.required]],
     number: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
@@ -91,6 +86,8 @@ export class PaymentOptionsComponent {
     this.editingId.set(null);
     this.showAddForm.set(true);
     this.error.set('');
+    // pre-fill holder with user's full name
+    this.form.patchValue({ holder: this.fullName });
   }
 
   openEditForm(card: PaymentCard): void {
@@ -98,7 +95,7 @@ export class PaymentOptionsComponent {
     this.showAddForm.set(true);
     this.form.patchValue({
       holder: card.holder,
-      number: `000000000000${card.last4}`, // placeholder — real number not stored
+      number: `000000000000${card.last4}`,
       expMonth: card.expMonth,
       expYear: card.expYear,
       cvv: '',
@@ -119,17 +116,15 @@ export class PaymentOptionsComponent {
     const last4 = number!.slice(-4);
     const type = this.cardTypeFromNumber(number!);
 
+    let updated: PaymentCard[];
+
     if (this.editingId()) {
-      // Update existing card
-      this.cards.update((cards) =>
-        cards.map((c) =>
-          c.id === this.editingId()
-            ? { ...c, holder: holder!, last4, type, expMonth: expMonth!, expYear: expYear! }
-            : c,
-        ),
+      updated = this.cards().map((c) =>
+        c.id === this.editingId()
+          ? { ...c, holder: holder!, last4, type, expMonth: expMonth!, expYear: expYear! }
+          : c,
       );
     } else {
-      // Add new card
       const newCard: PaymentCard = {
         id: Date.now().toString(),
         type,
@@ -137,10 +132,18 @@ export class PaymentOptionsComponent {
         holder: holder!,
         expMonth: expMonth!,
         expYear: expYear!,
-        isDefault: this.cards().length === 0,
+        isDefault: this.cards().length === 0, // first card becomes default
       };
-      this.cards.update((cards) => [...cards, newCard]);
+      updated = [...this.cards(), newCard];
+
+      // auto-save default_payment_id if this is the first card
+      if (newCard.isDefault) {
+        localStorage.setItem('default_payment_id', newCard.id);
+      }
     }
+
+    this.cards.set(updated);
+    this.syncCards(updated); // ← persist to localStorage
 
     this.saveSuccess.set(true);
     this.cancelForm();
@@ -148,7 +151,10 @@ export class PaymentOptionsComponent {
   }
 
   setDefault(id: string): void {
-    this.cards.update((cards) => cards.map((c) => ({ ...c, isDefault: c.id === id })));
+    const updated = this.cards().map((c) => ({ ...c, isDefault: c.id === id }));
+    this.cards.set(updated);
+    this.syncCards(updated); // ← persist cards
+    localStorage.setItem('default_payment_id', id); // ← persist default id
   }
 
   confirmDelete(id: string): void {
@@ -161,14 +167,19 @@ export class PaymentOptionsComponent {
 
   deleteCard(id: string): void {
     const wasDefault = this.cards().find((c) => c.id === id)?.isDefault;
-    this.cards.update((cards) => {
-      const remaining = cards.filter((c) => c.id !== id);
-      // Assign default to first card if the deleted one was default
-      if (wasDefault && remaining.length > 0) {
-        remaining[0].isDefault = true;
-      }
-      return remaining;
-    });
+    let remaining = this.cards().filter((c) => c.id !== id);
+
+    if (wasDefault && remaining.length > 0) {
+      remaining[0] = { ...remaining[0], isDefault: true };
+      localStorage.setItem('default_payment_id', remaining[0].id);
+    }
+
+    if (remaining.length === 0) {
+      localStorage.removeItem('default_payment_id');
+    }
+
+    this.cards.set(remaining);
+    this.syncCards(remaining); // ← persist to localStorage
     this.deleteConfirm.set(null);
   }
 }

@@ -1,0 +1,17 @@
+<div class="dropdown">
+  <div class="selected">
+    {{ selectedOption()?.label || 'Select an option' }}
+    <img src="icons/arrow-icon.svg" alt="arrow" class="arrow" />
+  </div>
+  <ul class="options">
+    @for (option of sortOptions(); track option.value) {
+      <li
+        class="option"
+        (click)="selectOption(option)"
+        [class.active]="option.value === selectedOption()?.value"
+      >
+        {{ option.label }}
+      </li>
+    }
+  </ul>
+</div>

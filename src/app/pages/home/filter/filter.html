@@ -1,0 +1,160 @@
+<!-- filter.component.html -->
+
+<aside class="filter">
+  <!-- ── Header ────────────────────────────────────────────────────────────── -->
+  <div class="filter__header">
+    <h3 class="filter__title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+      </svg>
+      Filters
+      @if (activeCount() > 0) {
+        <span class="filter__count">{{ activeCount() }}</span>
+      }
+    </h3>
+    @if (hasActiveFilters()) {
+      <button class="filter__clear" (click)="clearAll()">Clear all</button>
+    }
+  </div>
+
+  <!-- ── Categories ────────────────────────────────────────────────────────── -->
+  <div class="filter__section" [class.filter__section--closed]="!categoriesOpen()">
+    <button class="filter__section-header" (click)="toggle('categories')">
+      <span>Category</span>
+      <svg
+        class="filter__chevron"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </button>
+
+    @if (categoriesOpen()) {
+      <div class="filter__section-body">
+        @if (categories().length === 0) {
+          <p class="filter__empty">No categories available</p>
+        }
+        @for (cat of categories(); track cat) {
+          <label
+            class="filter__checkbox"
+            [class.filter__checkbox--checked]="isCategorySelected(cat)"
+          >
+            <input
+              type="checkbox"
+              [checked]="isCategorySelected(cat)"
+              (change)="toggleCategory(cat)"
+            />
+            <span class="filter__checkbox-box">
+              @if (isCategorySelected(cat)) {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              }
+            </span>
+            <span class="filter__checkbox-label">{{ formatLabel(cat) }}</span>
+          </label>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- ── Price Range ───────────────────────────────────────────────────────── -->
+  <div class="filter__section" [class.filter__section--closed]="!priceOpen()">
+    <button class="filter__section-header" (click)="toggle('price')">
+      <span>Price Range</span>
+      <svg
+        class="filter__chevron"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </button>
+
+    @if (priceOpen()) {
+      <div class="filter__section-body">
+        <div class="price-display">
+          <span class="price-display__val">${{ priceMin() }}</span>
+          <span class="price-display__sep">—</span>
+          <span class="price-display__val">${{ priceMax() }}</span>
+        </div>
+
+        <div class="range-track">
+          <div
+            class="range-track__fill"
+            [style.left.%]="(priceMin() / maxPrice()) * 100"
+            [style.right.%]="100 - (priceMax() / maxPrice()) * 100"
+          ></div>
+          <input
+            type="range"
+            class="range-input range-input--min"
+            [min]="0"
+            [max]="maxPrice()"
+            [value]="priceMin()"
+            (input)="onPriceMinChange($event)"
+          />
+          <input
+            type="range"
+            class="range-input range-input--max"
+            [min]="0"
+            [max]="maxPrice()"
+            [value]="priceMax()"
+            (input)="onPriceMaxChange($event)"
+          />
+        </div>
+
+        <div class="price-labels">
+          <span>$0</span>
+          <span>${{ maxPrice() }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- ── Rating ────────────────────────────────────────────────────────────── -->
+  <div
+    class="filter__section filter__section--last"
+    [class.filter__section--closed]="!ratingOpen()"
+  >
+    <button class="filter__section-header" (click)="toggle('rating')">
+      <span>Min Rating</span>
+      <svg
+        class="filter__chevron"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </button>
+
+    @if (ratingOpen()) {
+      <div class="filter__section-body">
+        @for (star of stars; track star) {
+          <button
+            class="rating-row"
+            [class.rating-row--active]="ratingMin() === star"
+            (click)="setRating(star)"
+          >
+            <div class="rating-row__stars">
+              @for (s of stars; track s) {
+                <svg class="star" [class.star--filled]="s <= star" viewBox="0 0 24 24">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+              }
+            </div>
+            <span class="rating-row__label">+</span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+</aside>

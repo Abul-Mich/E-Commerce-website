@@ -1,0 +1,15 @@
+@if (qty() === 0) {
+  <button class="add-to-cart-btn" (click)="reset()">Add to cart</button>
+} @else {
+  <div class="quantity-container">
+    <button class="icon-btn" (click)="remove()">
+      <img src="icons/minus-icon.svg" alt="Remove" />
+    </button>
+
+    <p class="quantity">{{ qty() }}</p>
+
+    <button class="icon-btn" (click)="add()">
+      <img src="icons/plus-icon.svg" alt="Add" />
+    </button>
+  </div>
+}

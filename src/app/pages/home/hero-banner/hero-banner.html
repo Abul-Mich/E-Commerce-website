@@ -1,0 +1,47 @@
+<section class="hero">
+  <div class="hero__content">
+    <div class="hero__dots hero__dots--top"></div>
+
+    <div class="hero__text">
+      <h1 class="hero__title">Flash <span class="hero__title--accent">Sale!</span></h1>
+      <p class="hero__subtitle">Get 25%-Limited Time Offer!</p>
+
+      <div class="hero__countdown">
+        <div class="hero__countdown-unit">
+          <span class="hero__countdown-value">{{ countdown.days }}</span>
+          <span class="hero__countdown-label">Days</span>
+        </div>
+        <span class="hero__countdown-sep">:</span>
+        <div class="hero__countdown-unit">
+          <span class="hero__countdown-value">{{ countdown.hours }}</span>
+          <span class="hero__countdown-label">Hours</span>
+        </div>
+        <span class="hero__countdown-sep">:</span>
+        <div class="hero__countdown-unit">
+          <span class="hero__countdown-value">{{ countdown.minutes }}</span>
+          <span class="hero__countdown-label">Minutes</span>
+        </div>
+        <span class="hero__countdown-sep">:</span>
+        <div class="hero__countdown-unit">
+          <span class="hero__countdown-value">{{ countdown.seconds }}</span>
+          <span class="hero__countdown-label">Seconds</span>
+        </div>
+      </div>
+
+      <button class="hero__cta">Shop Now <span class="hero__cta-arrow">→</span></button>
+    </div>
+
+    <div class="hero__dots hero__dots--bottom"></div>
+  </div>
+
+  <div class="hero__images">
+    <div class="hero__image-card hero__image-card--main">
+      <img src="photo1.jpg" alt="Featured product" />
+      <div class="inner"></div>
+    </div>
+    <div class="hero__image-card hero__image-card--secondary">
+      <img src="photo2.jpg" alt="Secondary product" />
+      <div class="inner"></div>
+    </div>
+  </div>
+</section>

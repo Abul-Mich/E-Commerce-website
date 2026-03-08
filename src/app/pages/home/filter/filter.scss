@@ -1,0 +1,352 @@
+// filter.component.scss
+
+$teal: #008174;
+$teal-light: rgba(0, 129, 116, 0.08);
+$teal-focus: rgba(0, 129, 116, 0.2);
+$text-dark: #1a1f2e;
+$text-mid: #5a6278;
+$text-light: #9aa3bb;
+$white: #ffffff;
+$border: #eef1f7;
+$bg: #f7f9fc;
+$font-body: 'DM Sans', system-ui, sans-serif;
+$radius: 10px;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+input[type='checkbox'] {
+  display: none;
+}
+
+// ── Sidebar wrapper ───────────────────────────────────────────────────────────
+.filter {
+  width: 240px;
+  flex-shrink: 0;
+  background: $white;
+  border-radius: 14px;
+  border: 1.5px solid $border;
+  overflow: hidden;
+  font-family: $font-body;
+  position: sticky;
+  top: 24px;
+  align-self: flex-start;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.filter__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 18px 14px;
+  border-bottom: 1.5px solid $border;
+}
+
+.filter__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: $text-dark;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    color: $teal;
+  }
+}
+
+.filter__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: $teal;
+  color: $white;
+  border-radius: 99px;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.filter__clear {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $text-light;
+  transition: color 0.15s;
+
+  &:hover {
+    color: #e74c3c;
+  }
+}
+
+// ── Section ───────────────────────────────────────────────────────────────────
+.filter__section {
+  border-bottom: 1.5px solid $border;
+
+  &--last {
+    border-bottom: none;
+  }
+  &--closed .filter__chevron {
+    transform: rotate(-90deg);
+  }
+}
+
+.filter__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: $text-dark;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $bg;
+  }
+}
+
+.filter__chevron {
+  width: 14px;
+  height: 14px;
+  color: $text-light;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.filter__section-body {
+  padding: 4px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: bodyIn 0.2s ease both;
+}
+
+@keyframes bodyIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filter__empty {
+  font-size: 0.8rem;
+  color: $text-light;
+}
+
+// ── Checkboxes ────────────────────────────────────────────────────────────────
+.filter__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 7px;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $teal-light;
+  }
+
+  &--checked {
+    background: $teal-light;
+  }
+
+  &-box {
+    width: 17px;
+    height: 17px;
+    border-radius: 4px;
+    border: 1.8px solid $border;
+    background: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition:
+      background 0.15s,
+      border-color 0.15s;
+
+    svg {
+      width: 10px;
+      height: 10px;
+      color: $white;
+    }
+  }
+
+  &--checked &-box {
+    background: $teal;
+    border-color: $teal;
+  }
+
+  &-label {
+    font-size: 0.85rem;
+    color: $text-mid;
+    transition: color 0.15s;
+    text-transform: capitalize;
+  }
+
+  &--checked &-label {
+    color: $text-dark;
+    font-weight: 600;
+  }
+}
+
+// ── Price Range ───────────────────────────────────────────────────────────────
+.price-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  &__val {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: $text-dark;
+    background: $bg;
+    border: 1.5px solid $border;
+    border-radius: 7px;
+    padding: 4px 10px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  &__sep {
+    font-size: 0.75rem;
+    color: $text-light;
+  }
+}
+
+.range-track {
+  position: relative;
+  height: 4px;
+  background: $border;
+  border-radius: 99px;
+  margin: 0 0 10px;
+}
+
+.range-track__fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: $teal;
+  border-radius: 99px;
+  pointer-events: none;
+}
+
+.range-input {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 4px;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  pointer-events: none;
+  outline: none;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: $white;
+    border: 2.5px solid $teal;
+    box-shadow: 0 2px 6px rgba($teal, 0.3);
+    pointer-events: all;
+    cursor: pointer;
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+
+    &:hover {
+      transform: scale(1.15);
+      box-shadow: 0 2px 10px rgba($teal, 0.45);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: $white;
+    border: 2.5px solid $teal;
+    box-shadow: 0 2px 6px rgba($teal, 0.3);
+    pointer-events: all;
+    cursor: pointer;
+  }
+}
+
+.price-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: $text-light;
+}
+
+// ── Rating rows ───────────────────────────────────────────────────────────────
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  width: 100%;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $teal-light;
+  }
+
+  &--active {
+    background: $teal-light;
+
+    .rating-row__label {
+      color: $teal;
+      font-weight: 600;
+    }
+  }
+
+  &__stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  &__label {
+    font-size: 0.78rem;
+    color: $text-light;
+    transition: color 0.15s;
+  }
+}
+
+.star {
+  width: 14px;
+  height: 14px;
+  fill: $border;
+  stroke: none;
+  transition: fill 0.15s;
+
+  &--filled {
+    fill: #f4a623;
+  }
+}

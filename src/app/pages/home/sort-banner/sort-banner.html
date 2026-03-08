@@ -1,0 +1,34 @@
+<div class="sort-toolbar">
+  <div class="sort-toolbar__left">
+    <app-custom-dropdown></app-custom-dropdown>
+  </div>
+
+  <div class="sort-toolbar__right">
+    <button
+      class="sort-toolbar__view-btn"
+      [class.sort-toolbar__view-btn--active]="viewMode === 'grid'"
+      (click)="setViewMode('grid')"
+      title="Grid view"
+    >
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <rect x="1" y="1" width="7" height="7" rx="1.5" fill="currentColor" />
+        <rect x="10" y="1" width="7" height="7" rx="1.5" fill="currentColor" />
+        <rect x="1" y="10" width="7" height="7" rx="1.5" fill="currentColor" />
+        <rect x="10" y="10" width="7" height="7" rx="1.5" fill="currentColor" />
+      </svg>
+    </button>
+
+    <button
+      class="sort-toolbar__view-btn"
+      [class.sort-toolbar__view-btn--active]="viewMode === 'list'"
+      (click)="setViewMode('list')"
+      title="List view"
+    >
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <rect x="1" y="2" width="16" height="3" rx="1.5" fill="currentColor" />
+        <rect x="1" y="7.5" width="16" height="3" rx="1.5" fill="currentColor" />
+        <rect x="1" y="13" width="16" height="3" rx="1.5" fill="currentColor" />
+      </svg>
+    </button>
+  </div>
+</div>

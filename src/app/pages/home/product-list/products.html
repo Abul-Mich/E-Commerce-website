@@ -1,0 +1,54 @@
+<div class="products-container">
+  <div class="header">
+    <h2>Products</h2>
+    <!-- <div class="nav-links">
+      <a routerLink="/login" class="link">Login</a>
+      <a routerLink="/signup" class="link">Sign Up</a>
+    </div> -->
+  </div>
+
+  <div class="products-grid">
+    @for (product of paginatedProducts(); track product.id) {
+      <app-product-card [product]="product">
+        <app-add-button class="add-button"></app-add-button>
+      </app-product-card>
+    }
+
+    <!-- Pagination -->
+    @if (totalPages() > 1) {
+      <div class="pagination">
+        <button
+          class="pagination__btn pagination__btn--arrow"
+          [disabled]="currentPage() === 1"
+          (click)="goToPage(currentPage() - 1)"
+          aria-label="Previous page"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        @for (page of pageNumbers(); track page) {
+          <button
+            class="pagination__btn"
+            [class.pagination__btn--active]="currentPage() === page"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        }
+
+        <button
+          class="pagination__btn pagination__btn--arrow"
+          [disabled]="currentPage() === totalPages()"
+          (click)="goToPage(currentPage() + 1)"
+          aria-label="Next page"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+    }
+  </div>
+</div>

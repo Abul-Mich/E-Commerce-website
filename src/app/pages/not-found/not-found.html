@@ -1,0 +1,21 @@
+<div class="not-found">
+  <div class="glitch-wrapper">
+    <span class="glitch" data-text="404">404</span>
+  </div>
+
+  <div class="content">
+    <p class="label">PAGE NOT FOUND</p>
+    <h1 class="title">You've wandered<br />off the map.</h1>
+    <p class="description">The page you're looking for doesn't exist, was moved, or never did.</p>
+    <a routerLink="/" class="btn">
+      <span class="btn__text">Back to Home</span>
+      <span class="btn__arrow">→</span>
+    </a>
+  </div>
+
+  <div class="grid-lines" aria-hidden="true">
+    @for (line of lines; track $index) {
+      <div class="grid-line"></div>
+    }
+  </div>
+</div>

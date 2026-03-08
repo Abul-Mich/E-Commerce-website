@@ -1,0 +1,23 @@
+// products-page.component.scss
+.home__body {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 24px 64px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    app-filter {
+      width: 100%;
+      position: static;
+    }
+  }
+}
+
+.home__main {
+  flex: 1;
+  min-width: 0;
+}
