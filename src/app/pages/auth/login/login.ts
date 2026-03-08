@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { noWhitespaceValidator } from '../shared/validators/custom-validators';
+import { noWhitespaceValidator } from '../../../shared/validators/custom-validators';
 import { AuthService } from '../../../core/services/auth-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 

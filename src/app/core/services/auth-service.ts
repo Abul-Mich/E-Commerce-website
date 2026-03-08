@@ -88,6 +88,9 @@ export class AuthService {
 
   logout(): void {
     this.clearSession();
+    localStorage.removeItem('payment_cards');
+    localStorage.removeItem('default_payment_id');
+    localStorage.removeItem('cart');
     this.router.navigate(['/']);
   }
 

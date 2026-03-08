@@ -26,6 +26,15 @@ export const routes: Routes = [
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'profile', component: ProfileEditComponent },
       { path: 'payment', component: PaymentOptionsComponent },
+      {
+        path: 'checkout',
+        loadComponent: () => import('./pages/checkout/checkout').then((m) => m.CheckoutComponent),
+      },
+      {
+        path: 'cart',
+        loadComponent: () =>
+          import('./pages/cart/cart-page/cart-page').then((m) => m.CartPageComponent),
+      },
     ],
   },
 

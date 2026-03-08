@@ -6,7 +6,7 @@ import {
   passwordMatchValidator,
   strongPasswordValidator,
   noWhitespaceValidator,
-} from '../shared/validators/custom-validators';
+} from '../../../shared/validators/custom-validators';
 import { first, switchMap } from 'rxjs';
 import { AuthService } from '../../../core/services/auth-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
