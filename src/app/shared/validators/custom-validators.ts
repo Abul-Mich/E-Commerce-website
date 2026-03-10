@@ -1,6 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-// Custom validator to check if password matches confirm password
 export function passwordMatchValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const password = control.get('password');
@@ -14,7 +13,6 @@ export function passwordMatchValidator(): ValidatorFn {
   };
 }
 
-// Custom validator for strong password
 export function strongPasswordValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
@@ -29,21 +27,23 @@ export function strongPasswordValidator(): ValidatorFn {
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
     const isValidLength = value.length >= 8;
 
-    const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && isValidLength;
+    const passwordValid =
+      hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && isValidLength;
 
-    return passwordValid ? null : {
-      strongPassword: {
-        hasUpperCase,
-        hasLowerCase,
-        hasNumeric,
-        hasSpecialChar,
-        isValidLength
-      }
-    };
+    return passwordValid
+      ? null
+      : {
+          strongPassword: {
+            hasUpperCase,
+            hasLowerCase,
+            hasNumeric,
+            hasSpecialChar,
+            isValidLength,
+          },
+        };
   };
 }
 
-// Custom validator for no whitespace
 export function noWhitespaceValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
@@ -58,7 +58,6 @@ export function noWhitespaceValidator(): ValidatorFn {
   };
 }
 
-// Custom validator for email domain
 export function emailDomainValidator(allowedDomains: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const email = control.value;
@@ -68,7 +67,7 @@ export function emailDomainValidator(allowedDomains: string[]): ValidatorFn {
     }
 
     const domain = email.split('@')[1];
-    const isValidDomain = allowedDomains.some(d => domain === d);
+    const isValidDomain = allowedDomains.some((d) => domain === d);
 
     return isValidDomain ? null : { invalidDomain: { allowedDomains } };
   };

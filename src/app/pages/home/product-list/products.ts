@@ -1,29 +1,25 @@
-import { Component, inject, output, signal, computed, input, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, input, effect } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../../core/services/product.service';
+import { ProductService } from '../../../core/services/product';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AddButton } from './components/add-button/add-button';
 import { IProduct } from '../../../models/product';
-import { FilterState } from '../filter/filter'; // adjust path
+import { FilterState } from '../filter/filter';
+import { SortOption, ViewMode } from '../sort-banner/sort-banner';
 import { ProductCard } from '../../../shared/components/product-card/product-card';
 import { map } from 'rxjs';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, AddButton, ProductCard],
+  imports: [ProductCard],
   templateUrl: './products.html',
   styleUrl: './products.scss',
 })
 export class ProductsComponent {
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  selectedProduct = signal<IProduct | null>(null);
-  product = output<IProduct>();
-
-  // ── Filters input from HomeComponent ─────────────────────────────────────
   readonly filters = input<FilterState>({
     categories: [],
     priceMin: 0,
@@ -31,10 +27,10 @@ export class ProductsComponent {
     ratingMin: 0,
   });
 
-  // ── Raw products from API ─────────────────────────────────────────────────
-  readonly products = toSignal(this.productService.getProducts(), { initialValue: [] });
+  readonly sort = input<SortOption>('best-selling');
+  readonly viewMode = input<ViewMode>('grid');
 
-  private readonly route = inject(ActivatedRoute);
+  readonly products = toSignal(this.productService.getProducts(), { initialValue: [] });
 
   readonly searchQuery = toSignal(
     this.route.queryParamMap.pipe(
@@ -43,13 +39,11 @@ export class ProductsComponent {
     { initialValue: '' },
   );
 
-  // ── Update filteredProducts computed to also apply search ─────────────────────
   readonly filteredProducts = computed(() => {
     const f = this.filters();
     const search = this.searchQuery();
-    const all = this.products();
 
-    return all.filter((p) => {
+    return this.products().filter((p) => {
       const matchesCategory = f.categories.length === 0 || f.categories.includes(p.category);
       const matchesPrice = p.price >= f.priceMin && p.price <= f.priceMax;
       const matchesRating = (p.rating?.rate ?? 0) >= f.ratingMin;
@@ -57,34 +51,46 @@ export class ProductsComponent {
         !search ||
         p.title.toLowerCase().includes(search) ||
         p.category.toLowerCase().includes(search);
-
       return matchesCategory && matchesPrice && matchesRating && matchesSearch;
     });
   });
 
-  // pagination state
-  readonly currentPage = signal(1);
-  readonly itemsPerPage = signal(9); // 3 columns × 3 rows
-
-  // slice filteredProducts for current page
-  readonly paginatedProducts = computed(() => {
-    const start = (this.currentPage() - 1) * this.itemsPerPage();
-    const end = start + this.itemsPerPage();
-    return this.filteredProducts().slice(start, end);
+  readonly sortedProducts = computed(() => {
+    const products = [...this.filteredProducts()];
+    switch (this.sort()) {
+      case 'price-asc':
+        return products.sort((a, b) => a.price - b.price);
+      case 'price-desc':
+        return products.sort((a, b) => b.price - a.price);
+      case 'rating':
+        return products.sort((a, b) => b.rating.rate - a.rating.rate);
+      case 'newest':
+        return products.sort((a, b) => b.id - a.id);
+      case 'best-selling':
+      default:
+        return products.sort((a, b) => b.rating.count - a.rating.count);
+    }
   });
 
-  // total pages
+  readonly currentPage = signal(1);
+  readonly itemsPerPage = signal(9);
+
+  readonly paginatedProducts = computed(() => {
+    const start = (this.currentPage() - 1) * this.itemsPerPage();
+    return this.sortedProducts().slice(start, start + this.itemsPerPage());
+  });
+
   readonly totalPages = computed(() =>
-    Math.ceil(this.filteredProducts().length / this.itemsPerPage()),
+    Math.ceil(this.sortedProducts().length / this.itemsPerPage()),
   );
 
-  // page numbers array for template
   readonly pageNumbers = computed(() => Array.from({ length: this.totalPages() }, (_, i) => i + 1));
 
-  // reset to page 1 when filters change
   constructor() {
     effect(() => {
-      this.filters(); // track filters signal
+      this.filters();
+      this.sort();
+      this.searchQuery();
       this.currentPage.set(1);
     });
   }
@@ -97,9 +103,5 @@ export class ProductsComponent {
 
   onCardClick(product: IProduct): void {
     this.router.navigate(['/products', product.id]);
-  }
-
-  onProductClick(product: IProduct): void {
-    this.selectedProduct.set(product);
   }
 }

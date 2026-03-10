@@ -12,13 +12,12 @@ export const authErrorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       switch (error.status) {
         case 401:
-          // Unauthorized → redirect to login
+          authService.logout();
           router.navigate(['/login']);
           break;
 
         case 404:
-          // Resource not found → redirect to 404 page
-          router.navigate(['/not-found']);
+          router.navigate(['/not-found-page'], { skipLocationChange: true });
           break;
       }
 

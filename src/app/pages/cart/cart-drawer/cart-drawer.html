@@ -1,13 +1,8 @@
-<!-- cart-drawer.component.html -->
-
-<!-- Backdrop -->
 @if (isOpen()) {
   <div class="drawer-backdrop" (click)="close()"></div>
 }
 
-<!-- Drawer panel -->
 <div class="drawer" [class.drawer--open]="isOpen()" role="dialog" aria-label="Shopping cart">
-  <!-- ── Header ────────────────────────────────────────────────────────────── -->
   <div class="drawer__header">
     <div class="drawer__title">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -28,7 +23,6 @@
     </button>
   </div>
 
-  <!-- ── Empty state ───────────────────────────────────────────────────────── -->
   @if (!cart.hasItems()) {
     <div class="drawer__empty">
       <div class="drawer__empty-icon">
@@ -44,12 +38,10 @@
     </div>
   }
 
-  <!-- ── Items list ────────────────────────────────────────────────────────── -->
   @if (cart.hasItems()) {
     <div class="drawer__items">
       @for (item of cart.items(); track item.productId) {
         <div class="cart-item">
-          <!-- Product image -->
           <div class="cart-item__image">
             <img
               [src]="item.image"
@@ -58,13 +50,11 @@
             />
           </div>
 
-          <!-- Details -->
           <div class="cart-item__details">
             <p class="cart-item__name">{{ item.name }}</p>
             <p class="cart-item__price">${{ formatPrice(item.price) }}</p>
 
             <div class="cart-item__bottom">
-              <!-- Quantity controls -->
               <div class="qty">
                 <button
                   class="qty__btn"
@@ -89,12 +79,10 @@
                 </button>
               </div>
 
-              <!-- Item total -->
               <span class="cart-item__total">${{ itemTotal(item) }}</span>
             </div>
           </div>
 
-          <!-- Remove -->
           <button
             class="cart-item__remove"
             (click)="remove(item.productId)"
@@ -111,7 +99,6 @@
       }
     </div>
 
-    <!-- ── Footer ──────────────────────────────────────────────────────────── -->
     <div class="drawer__footer">
       <div class="drawer__subtotal">
         <span

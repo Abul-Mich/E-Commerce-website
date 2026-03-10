@@ -1,6 +1,4 @@
 import { Component, signal, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { DropdownComponent } from './dropdown/dropdown';
 
 export type ViewMode = 'grid' | 'list';
@@ -14,18 +12,18 @@ interface SortOptionItem {
 @Component({
   selector: 'app-sort-banner',
   standalone: true,
-  imports: [CommonModule, FormsModule, DropdownComponent],
+  imports: [DropdownComponent],
   templateUrl: './sort-banner.html',
   styleUrl: './sort-banner.scss',
 })
 export class SortBannerComponent {
-  sortChanged = output<SortOption>();
-  viewModeChanged = output<ViewMode>();
+  readonly sortChanged = output<SortOption>();
+  readonly viewModeChanged = output<ViewMode>();
 
-  selectedSort: SortOption = 'best-selling';
-  viewMode: ViewMode = 'grid';
+  readonly selectedSort = signal<SortOption>('best-selling');
+  readonly viewMode = signal<ViewMode>('grid');
 
-  sortOptions: SortOptionItem[] = [
+  readonly sortOptions: SortOptionItem[] = [
     { value: 'best-selling', label: 'Best Selling' },
     { value: 'newest', label: 'Newest' },
     { value: 'price-asc', label: 'Price: Low to High' },
@@ -34,11 +32,12 @@ export class SortBannerComponent {
   ];
 
   onSortChange(value: SortOption): void {
+    this.selectedSort.set(value);
     this.sortChanged.emit(value);
   }
 
   setViewMode(mode: ViewMode): void {
-    this.viewMode = mode;
+    this.viewMode.set(mode);
     this.viewModeChanged.emit(mode);
   }
 }

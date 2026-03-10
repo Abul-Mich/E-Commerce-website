@@ -14,7 +14,7 @@ import { IUser } from '../../../../models/user';
 
 function getUserFromStorage(): IUser | null {
   try {
-    const raw = localStorage.getItem('auth_user'); // adjust key name if needed
+    const raw = localStorage.getItem('auth_user');
     return raw ? (JSON.parse(raw) as IUser) : null;
   } catch {
     return null;
@@ -29,18 +29,14 @@ function getUserFromStorage(): IUser | null {
   styleUrl: './profile-dropdown.scss',
 })
 export class ProfileDropdownComponent {
-  // ── DI ──────────────────────────────────────────────────────────────────
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly elRef = inject(ElementRef);
 
-  // ── Outputs ──────────────────────────────────────────────────────────────
   readonly signedOut = output<void>();
 
-  // ── State ────────────────────────────────────────────────────────────────
   readonly isOpen = signal(false);
 
-  // ── Derived ──────────────────────────────────────────────────────────────
   readonly username = computed(() => this.authService.currentUser()?.username ?? 'user');
   readonly firstName = computed(() => this.authService.currentUser()?.firstName ?? '');
   readonly email = computed(() => this.authService.currentUser()?.email ?? '');
@@ -49,7 +45,6 @@ export class ProfileDropdownComponent {
   );
   readonly role = computed(() => this.authService.currentUser()?.role ?? 'Member');
 
-  // ── Methods ──────────────────────────────────────────────────────────────
   toggle(): void {
     this.isOpen.update((v) => !v);
   }
@@ -62,10 +57,8 @@ export class ProfileDropdownComponent {
     this.close();
     this.authService.logout();
     this.signedOut.emit();
-    // this.router.navigate(['/products']);
   }
 
-  // ── Host listeners ───────────────────────────────────────────────────────
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     if (!this.elRef.nativeElement.contains(event.target)) {

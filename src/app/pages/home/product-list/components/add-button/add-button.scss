@@ -1,61 +1,85 @@
+$teal: #008174;
+$teal-light: rgba(0, 129, 116, 0.08);
+$text-dark: #1a1f2e;
+$text-mid: #5a6278;
+$text-light: #9aa3bb;
+$white: #ffffff;
+$border: #eef1f7;
+$font-body: 'DM Sans', system-ui, sans-serif;
+
 .add-to-cart-btn {
   width: 100%;
   padding: 10px 0;
-  background: #1a9e8f;
-  color: white;
+  background: $teal;
+  color: $white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
+  font-family: $font-body;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+  letter-spacing: 0.02em;
   transition:
     background 0.2s ease,
+    box-shadow 0.2s ease,
     transform 0.15s ease;
-}
+  box-shadow: 0 4px 12px rgba($teal, 0.25);
 
-.add-to-cart-btn:hover {
-  background: #333;
-  transform: translateY(-2px);
+  &:hover {
+    background: darken($teal, 6%);
+    box-shadow: 0 6px 16px rgba($teal, 0.35);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .quantity-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 6px 0;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  background: #fafafa;
+  gap: 0;
+  border: 1.5px solid $border;
+  border-radius: 10px;
+  background: $white;
+  overflow: hidden;
 }
 
 .icon-btn {
   width: 36px;
   height: 36px;
   border: none;
-  background: white;
-  border-radius: 6px;
+  background: $white;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: $text-mid;
   transition:
-    background 0.2s ease,
-    transform 0.15s ease;
-}
+    background 0.15s ease,
+    color 0.15s ease;
 
-.icon-btn:hover {
-  background: #f0f0f0;
-  transform: scale(1.05);
-}
+  svg {
+    width: 14px;
+    height: 14px;
+  }
 
-.icon-btn img {
-  width: 16px;
-  height: 16px;
+  &:hover {
+    background: $teal-light;
+    color: $teal;
+  }
 }
 
 .quantity {
-  font-size: 1rem;
+  font-family: $font-body;
+  font-size: 0.92rem;
   font-weight: 600;
-  min-width: 20px;
+  min-width: 36px;
   text-align: center;
+  color: $text-dark;
+  border-left: 1px solid $border;
+  border-right: 1px solid $border;
+  line-height: 36px;
 }

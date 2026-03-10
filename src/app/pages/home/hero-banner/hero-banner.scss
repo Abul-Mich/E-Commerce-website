@@ -1,12 +1,15 @@
+$teal: #008174;
+$teal-hover: darken(#008174, 6%);
 $hero-bg: #eef2ee;
-$accent: #1a9e8f;
-$accent-hover: #158a7d;
-$title-color: #1e2535;
-$text-muted: #555;
-$countdown-color: #1e2535;
+$title-color: #1a1f2e;
+$text-muted: #5a6278;
+$countdown-color: #1a1f2e;
+$font-display: 'Playfair Display', Georgia, serif;
+$font-body: 'DM Sans', system-ui, sans-serif;
 
 .hero {
   display: flex;
+  justify-content: space-around;
   align-items: stretch;
   background-color: $hero-bg;
   min-height: 380px;
@@ -31,18 +34,21 @@ $countdown-color: #1e2535;
   }
 
   &__title {
+    font-family: $font-display;
     font-size: 2.4rem;
     font-weight: 700;
     color: $title-color;
     margin: 0 0 8px;
     line-height: 1.1;
+    letter-spacing: -0.02em;
 
     &--accent {
-      color: $accent;
+      color: $teal;
     }
   }
 
   &__subtitle {
+    font-family: $font-body;
     font-size: 1rem;
     color: $text-muted;
     margin: 0 0 28px;
@@ -62,6 +68,7 @@ $countdown-color: #1e2535;
     }
 
     &-value {
+      font-family: $font-display;
       font-size: 2.6rem;
       font-weight: 700;
       color: $countdown-color;
@@ -69,9 +76,12 @@ $countdown-color: #1e2535;
     }
 
     &-label {
+      font-family: $font-body;
       font-size: 0.72rem;
       color: $text-muted;
       margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
     &-sep {
@@ -87,21 +97,26 @@ $countdown-color: #1e2535;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background-color: $accent;
+    background-color: $teal;
     color: #fff;
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 13px 28px;
-    font-size: 0.95rem;
+    font-family: $font-body;
+    font-size: 0.92rem;
     font-weight: 600;
     cursor: pointer;
     transition:
       background-color 0.2s ease,
+      box-shadow 0.2s ease,
       transform 0.15s ease;
+    box-shadow: 0 4px 14px rgba($teal, 0.3);
     width: fit-content;
+    letter-spacing: 0.02em;
 
     &:hover {
-      background-color: $accent-hover;
+      background-color: $teal-hover;
+      box-shadow: 0 6px 18px rgba($teal, 0.4);
       transform: translateY(-1px);
     }
 
@@ -114,7 +129,6 @@ $countdown-color: #1e2535;
     }
   }
 
-  // Decorative dot patterns
   &__dots {
     position: absolute;
     width: 120px;
@@ -145,7 +159,7 @@ $countdown-color: #1e2535;
 
   &__image-card {
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: 10px;
     position: relative;
 
     img {
@@ -156,9 +170,9 @@ $countdown-color: #1e2535;
     }
     .inner {
       position: absolute;
-      inset: 10px; /* gap from all edges */
+      inset: 10px;
       border: 8px solid rgb(255, 255, 255);
-      border-radius: 6px;
+      border-radius: 8px;
       pointer-events: none;
     }
 
@@ -168,7 +182,6 @@ $countdown-color: #1e2535;
 
     &--secondary {
       flex: 1;
-      border-radius: 6px;
     }
   }
 }

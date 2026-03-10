@@ -1,8 +1,8 @@
 import { Component, inject, signal, computed } from '@angular/core';
-import { ProductService } from '../../core/services/product.service';
+import { ProductService } from '../../core/services/product';
 import { HeroBannerComponent } from './hero-banner/hero-banner';
 import { ProductsComponent } from './product-list/products';
-import { SortBannerComponent } from './sort-banner/sort-banner';
+import { SortBannerComponent, SortOption, ViewMode } from './sort-banner/sort-banner';
 import { FilterComponent, FilterState } from './filter/filter';
 
 @Component({
@@ -32,7 +32,18 @@ export class HomeComponent {
     ratingMin: 0,
   });
 
+  readonly activeSort = signal<SortOption>('best-selling');
+  readonly activeViewMode = signal<ViewMode>('grid');
+
   onFilterChange(filters: FilterState): void {
     this.activeFilters.set(filters);
+  }
+
+  onSortChange(sort: SortOption): void {
+    this.activeSort.set(sort);
+  }
+
+  onViewModeChange(mode: ViewMode): void {
+    this.activeViewMode.set(mode);
   }
 }

@@ -1,7 +1,4 @@
-<!-- profile-dropdown.component.html -->
-
 <div class="profile-dropdown" [class.profile-dropdown--open]="isOpen()">
-  <!-- Trigger button -->
   <button
     class="profile-trigger"
     (click)="toggle()"
@@ -24,10 +21,8 @@
     </svg>
   </button>
 
-  <!-- Dropdown panel — rendered via @if so it's fully removed from the DOM when closed -->
   @if (isOpen()) {
     <div class="dropdown" role="menu" aria-label="User menu">
-      <!-- Username header -->
       <div class="dropdown__header">
         <div class="dropdown__avatar">
           <img [src]="image()" alt="" aria-hidden="true" />
@@ -40,7 +35,6 @@
 
       <div class="dropdown__divider"></div>
 
-      <!-- Profile link -->
       <button class="dropdown__item" routerLink="/profile" role="menuitem" (click)="close()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -60,7 +54,6 @@
 
       <div class="dropdown__divider"></div>
 
-      <!-- Sign out -->
       <button class="dropdown__item dropdown__item--danger" role="menuitem" (click)="signOut()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

@@ -8,22 +8,22 @@
 
       <div class="hero__countdown">
         <div class="hero__countdown-unit">
-          <span class="hero__countdown-value">{{ countdown.days }}</span>
+          <span class="hero__countdown-value">{{ countdown().days }}</span>
           <span class="hero__countdown-label">Days</span>
         </div>
         <span class="hero__countdown-sep">:</span>
         <div class="hero__countdown-unit">
-          <span class="hero__countdown-value">{{ countdown.hours }}</span>
+          <span class="hero__countdown-value">{{ countdown().hours }}</span>
           <span class="hero__countdown-label">Hours</span>
         </div>
         <span class="hero__countdown-sep">:</span>
         <div class="hero__countdown-unit">
-          <span class="hero__countdown-value">{{ countdown.minutes }}</span>
+          <span class="hero__countdown-value">{{ countdown().minutes }}</span>
           <span class="hero__countdown-label">Minutes</span>
         </div>
         <span class="hero__countdown-sep">:</span>
         <div class="hero__countdown-unit">
-          <span class="hero__countdown-value">{{ countdown.seconds }}</span>
+          <span class="hero__countdown-value">{{ countdown().seconds }}</span>
           <span class="hero__countdown-label">Seconds</span>
         </div>
       </div>

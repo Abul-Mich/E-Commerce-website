@@ -1,5 +1,3 @@
-// search-bar.component.scss
-
 $teal: #008174;
 $teal-glow: rgba(0, 129, 116, 0.2);
 $text-dark: #1a1f2e;
@@ -11,10 +9,9 @@ $font-body: 'DM Sans', system-ui, sans-serif;
 $mobile-bp: 768px;
 
 :host {
-  display: contents; // doesn't affect layout — host is invisible
+  display: contents;
 }
 
-// ── Shared bar styles ─────────────────────────────────────────────────────────
 .search-bar {
   display: flex;
   align-items: center;
@@ -100,7 +97,6 @@ $mobile-bp: 768px;
   }
 }
 
-// ── Desktop bar ───────────────────────────────────────────────────────────────
 .search-bar--desktop {
   width: 280px;
 
@@ -115,7 +111,6 @@ $mobile-bp: 768px;
     }
   }
 
-  // shrink as viewport narrows
   @media (max-width: 1100px) {
     width: 220px;
   }
@@ -123,13 +118,11 @@ $mobile-bp: 768px;
     width: 180px;
   }
 
-  // hide on mobile — toggle button takes over
   @media (max-width: $mobile-bp) {
     display: none;
   }
 }
 
-// ── Mobile toggle button ──────────────────────────────────────────────────────
 .search-bar__mobile-toggle {
   display: none;
   width: 38px;
@@ -156,10 +149,9 @@ $mobile-bp: 768px;
   }
 }
 
-// ── Mobile expanded bar ───────────────────────────────────────────────────────
 .search-bar--mobile {
   position: fixed;
-  top: 58px; // header height
+  top: 58px;
   left: 0;
   right: 0;
   width: 100%;
@@ -180,7 +172,6 @@ $mobile-bp: 768px;
     font-size: 0.95rem;
   }
 
-  // only visible on mobile
   @media (min-width: calc($mobile-bp + 1px)) {
     display: none;
   }

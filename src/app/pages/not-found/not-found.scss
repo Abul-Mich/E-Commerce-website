@@ -6,7 +6,6 @@
   height: 100%;
 }
 
-// Variables
 $bg: #283044;
 $surface: #1e2535;
 $accent: #008174;
@@ -27,7 +26,6 @@ $border: #374357;
   padding: 2rem;
 }
 
-// Vertical grid lines background
 .grid-lines {
   position: absolute;
   inset: 0;
@@ -44,7 +42,6 @@ $border: #374357;
   }
 }
 
-// Giant 404 glitch
 .glitch-wrapper {
   position: relative;
   z-index: 1;
@@ -92,7 +89,6 @@ $border: #374357;
   }
 }
 
-// Content block
 .content {
   position: relative;
   z-index: 1;
@@ -126,7 +122,6 @@ $border: #374357;
   margin-bottom: 2.5rem;
 }
 
-// CTA button
 .btn {
   display: inline-flex;
   align-items: center;
@@ -160,7 +155,6 @@ $border: #374357;
   }
 }
 
-// Glitch animations
 @keyframes glitch-top {
   0%,
   90%,

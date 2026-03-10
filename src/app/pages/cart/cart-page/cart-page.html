@@ -1,7 +1,4 @@
-<!-- cart-page.component.html -->
-
 <div class="cart-page">
-  <!-- ── Breadcrumb ─────────────────────────────────────────────────────── -->
   <nav class="breadcrumb">
     <a routerLink="/" class="breadcrumb__link">Home</a>
     <span class="breadcrumb__sep">/</span>
@@ -10,7 +7,6 @@
 
   <h1 class="cart-page__title">Shopping Cart</h1>
 
-  <!-- ── Empty state ───────────────────────────────────────────────────────── -->
   @if (!cart.hasItems()) {
     <div class="empty-state">
       <div class="empty-state__icon">
@@ -35,9 +31,7 @@
 
   @if (cart.hasItems()) {
     <div class="cart-layout">
-      <!-- ── Left: Items ──────────────────────────────────────────────────── -->
       <section class="cart-items">
-        <!-- Free shipping progress -->
         @if (freeShippingRemaining() > 0) {
           <div class="shipping-progress">
             <p class="shipping-progress__text">
@@ -58,7 +52,6 @@
           </div>
         }
 
-        <!-- Items table header -->
         <div class="items-header">
           <span>Product</span>
           <span>Price</span>
@@ -67,10 +60,8 @@
           <span></span>
         </div>
 
-        <!-- Items -->
         @for (item of cart.items(); track item.productId) {
           <div class="cart-row">
-            <!-- Product -->
             <div class="cart-row__product">
               <div class="cart-row__image">
                 <img
@@ -87,10 +78,8 @@
               </div>
             </div>
 
-            <!-- Unit price -->
             <div class="cart-row__price">${{ formatPrice(item.price) }}</div>
 
-            <!-- Quantity -->
             <div class="cart-row__qty">
               <div class="qty">
                 <button
@@ -117,10 +106,8 @@
               </div>
             </div>
 
-            <!-- Item total -->
             <div class="cart-row__total">${{ itemTotal(item) }}</div>
 
-            <!-- Remove -->
             <button
               class="cart-row__remove"
               (click)="remove(item.productId)"
@@ -136,7 +123,6 @@
           </div>
         }
 
-        <!-- Bottom actions -->
         <div class="items-actions">
           <a routerLink="/products" class="btn btn--ghost btn--sm">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -154,7 +140,6 @@
         </div>
       </section>
 
-      <!-- ── Right: Summary ────────────────────────────────────────────────── -->
       <aside class="cart-summary">
         <h2 class="cart-summary__title">Order Summary</h2>
 
@@ -186,7 +171,6 @@
           </svg>
         </button>
 
-        <!-- Security badges -->
         <div class="security-badges">
           <div class="badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">

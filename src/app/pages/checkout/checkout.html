@@ -1,7 +1,4 @@
-<!-- checkout.component.html -->
-
 <div class="checkout-page">
-  <!-- ── Breadcrumb ────────────────────────────────────────────────────────── -->
   <nav class="breadcrumb">
     <a routerLink="/" class="breadcrumb__link">Home</a>
     <span class="breadcrumb__sep">/</span>
@@ -12,7 +9,6 @@
 
   <h1 class="checkout-page__title">Checkout</h1>
 
-  <!-- ── Success state ─────────────────────────────────────────────────────── -->
   @if (success()) {
     <div class="success-state">
       <div class="success-state__icon">
@@ -28,9 +24,7 @@
 
   @if (!success()) {
     <div class="checkout-layout">
-      <!-- ── Left column ──────────────────────────────────────────────────── -->
       <div class="checkout-left">
-        <!-- Error -->
         @if (error()) {
           <div class="message message--error">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -42,7 +36,6 @@
           </div>
         }
 
-        <!-- ── Payment Method ──────────────────────────────────────────────── -->
         <section class="checkout-section">
           <h2 class="checkout-section__title">
             <span class="checkout-section__step">1</span>
@@ -66,14 +59,12 @@
                   role="radio"
                   [attr.aria-checked]="selectedCardId() === card.id"
                 >
-                  <!-- Radio indicator -->
                   <div class="card-option__radio">
                     @if (selectedCardId() === card.id) {
                       <div class="card-option__radio-dot"></div>
                     }
                   </div>
 
-                  <!-- Card type logo -->
                   <div class="card-option__logo">
                     @switch (card.type) {
                       @case ('visa') {
@@ -91,7 +82,6 @@
                     }
                   </div>
 
-                  <!-- Card info -->
                   <div class="card-option__info">
                     <span class="card-option__number">{{ maskedNumber(card.last4) }}</span>
                     <span class="card-option__meta"
@@ -99,7 +89,6 @@
                     >
                   </div>
 
-                  <!-- Default badge -->
                   @if (card.isDefault) {
                     <span class="card-option__default">Default</span>
                   }
@@ -117,7 +106,6 @@
           }
         </section>
 
-        <!-- ── Order Items ─────────────────────────────────────────────────── -->
         <section class="checkout-section">
           <h2 class="checkout-section__title">
             <span class="checkout-section__step">2</span>
@@ -147,7 +135,6 @@
         </section>
       </div>
 
-      <!-- ── Right: Summary ────────────────────────────────────────────────── -->
       <aside class="checkout-summary">
         <h2 class="checkout-summary__title">Order Summary</h2>
 
@@ -172,7 +159,6 @@
           </div>
         </div>
 
-        <!-- Selected payment recap -->
         @if (selectedCard()) {
           <div class="selected-payment">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -198,7 +184,6 @@
           <p class="checkout-summary__hint">Select a payment method to continue</p>
         }
 
-        <!-- Security note -->
         <div class="security-note">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />

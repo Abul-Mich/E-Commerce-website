@@ -1,19 +1,49 @@
 @let p = product();
-@if (p) {
-  <div class="product-card" (click)="onCardClick(p)">
-    <div class="image-container">
-      <img [src]="p.image" [alt]="p.title" class="product-image" />
+
+@if (viewMode() === 'list') {
+  <div class="product-card product-card--list" (click)="onCardClick()">
+    <div class="product-card__image-wrap">
+      <img [src]="p.image" [alt]="p.title" class="product-card__image" />
     </div>
-    <div class="product-content">
-      <h3 class="product-title">{{ p.title }}</h3>
-      <div class="review-container">
-        <span class="stars">⭐ {{ p.rating.rate }}</span>
-        <span class="review-count">({{ p.rating.count }} reviews)</span>
+
+    <div class="product-card__body">
+      <span class="product-card__category">{{ p.category }}</span>
+      <h3 class="product-card__title">{{ p.title }}</h3>
+      <p class="product-card__description">{{ p.description }}</p>
+
+      <div class="product-card__meta">
+        <div class="product-card__rating">
+          <span class="product-card__stars">{{ stars }}</span>
+          <span class="product-card__review-count">{{ p.rating.rate }} ({{ p.rating.count }})</span>
+        </div>
       </div>
-      <div class="price-container">
-        <span class="price">${{ p.price.toFixed(2) }}</span>
+    </div>
+
+    <div class="product-card__aside">
+      <span class="product-card__price">${{ p.price.toFixed(2) }}</span>
+      <button class="product-card__cta" (click)="onCardClick(); $event.stopPropagation()">
+        View Product
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+} @else {
+  <div class="product-card product-card--grid" (click)="onCardClick()">
+    <div class="product-card__image-wrap">
+      <img [src]="p.image" [alt]="p.title" class="product-card__image" />
+      <span class="product-card__category-badge">{{ p.category }}</span>
+    </div>
+    <div class="product-card__body">
+      <h3 class="product-card__title">{{ p.title }}</h3>
+      <div class="product-card__rating">
+        <span class="product-card__stars">{{ stars }}</span>
+        <span class="product-card__review-count">({{ p.rating.count }})</span>
       </div>
-      <ng-content />
+      <div class="product-card__footer">
+        <span class="product-card__price">${{ p.price.toFixed(2) }}</span>
+      </div>
     </div>
   </div>
 }

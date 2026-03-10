@@ -1,17 +1,17 @@
+import { AuthService } from './../../core/services/auth-service';
 import { Component, signal, computed, effect, inject, DestroyRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IProduct } from '../../models/product';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../core/services/product.service';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { ProductService } from '../../core/services/product';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { map, switchMap } from 'rxjs';
 import { CartService } from '../../core/services/cart';
 import { ProductCard } from '../../shared/components/product-card/product-card';
 
 @Component({
   selector: 'app-product-details',
-  imports: [CommonModule, FormsModule, ProductCard],
+  imports: [FormsModule, ProductCard],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',
 })
@@ -21,8 +21,10 @@ export class ProductDetailsComponent {
   private readonly productService = inject(ProductService);
   private readonly cartService = inject(CartService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly authService = inject(AuthService);
 
-  // ── Product — toSignal handles re-fetch on route param change ─────────────
+  readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
+
   readonly product = toSignal(
     this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
@@ -31,7 +33,6 @@ export class ProductDetailsComponent {
     { initialValue: null },
   );
 
-  // ── All products for similar section ──────────────────────────────────────
   readonly allProducts = this.productService.products;
 
   readonly similarProducts = computed(() => {
@@ -42,35 +43,35 @@ export class ProductDetailsComponent {
       .slice(0, 4);
   });
 
-  // ── UI state ──────────────────────────────────────────────────────────────
   readonly quantity = signal<number>(1);
   readonly showNotification = signal<boolean>(false);
   readonly notificationMessage = signal<string>('');
 
-  // ── Computed ──────────────────────────────────────────────────────────────
   readonly totalPrice = computed(() => ((this.product()?.price ?? 0) * this.quantity()).toFixed(2));
 
+  readonly canIncrement = computed(
+    () => !this.cartService.isQuantityMaxed(this.quantity(), undefined),
+  );
+
+  get stars(): string {
+    const rate = this.product()?.rating.rate;
+    const full = Math.floor(rate!);
+    const half = rate! % 1 >= 0.5;
+    return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
+  }
   constructor() {
-    // reset quantity when navigating to a different product
     effect(() => {
-      this.product(); // track product changes
+      this.product();
       this.quantity.set(1);
     });
   }
 
-  // ── Actions ───────────────────────────────────────────────────────────────
   onCardClick(product: IProduct): void {
     this.router.navigate(['/products', product.id]);
   }
-  isCartFull(): boolean {
-    return this.cartService.isQuantityMaxed(this.quantity());
-  }
-  isAtMaxQuantity(): boolean {
-    return this.cartService.isQuantityMaxed(this.quantity(), undefined);
-  }
 
   incrementQuantity(): void {
-    if (!this.isAtMaxQuantity()) this.quantity.update((q) => q + 1);
+    if (this.canIncrement()) this.quantity.update((q) => q + 1);
   }
 
   decrementQuantity(): void {
@@ -97,7 +98,7 @@ export class ProductDetailsComponent {
     this.showNotification.set(true);
     this.quantity.set(1);
 
-    setTimeout(() => this.showNotification.set(false), 3000);
+    setTimeout(() => this.showNotification.set(false), 2000);
   }
 
   formatPrice(price: number): string {

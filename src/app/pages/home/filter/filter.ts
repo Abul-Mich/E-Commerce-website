@@ -1,5 +1,3 @@
-// filter.component.ts
-
 import { Component, input, output, signal, computed, effect } from '@angular/core';
 
 export interface FilterState {
@@ -9,12 +7,12 @@ export interface FilterState {
   ratingMin: number;
 }
 
-const DEFAULT_FILTER: FilterState = {
-  categories: [],
-  priceMin: 0,
-  priceMax: 1000,
-  ratingMin: 0,
-};
+// const DEFAULT_FILTER: FilterState = {
+//   categories: [],
+//   priceMin: 0,
+//   priceMax: 1000,
+//   ratingMin: 0,
+// };
 
 @Component({
   selector: 'app-filter',
@@ -23,17 +21,12 @@ const DEFAULT_FILTER: FilterState = {
   styleUrl: './filter.scss',
 })
 export class FilterComponent {
-  // ── Inputs ────────────────────────────────────────────────────────────────
-  /** All unique categories derived from the products list */
   readonly categories = input<string[]>([]);
 
-  /** Max price in the products list — used to set the slider ceiling */
   readonly maxPrice = input<number>(1000);
 
-  // ── Outputs ───────────────────────────────────────────────────────────────
   readonly filterChange = output<FilterState>();
 
-  // ── State ─────────────────────────────────────────────────────────────────
   readonly selectedCategories = signal<string[]>([]);
   readonly priceMin = signal<number>(0);
   readonly priceMax = signal<number>(1000);
@@ -43,7 +36,6 @@ export class FilterComponent {
   readonly priceOpen = signal(true);
   readonly ratingOpen = signal(true);
 
-  // ── Computed ──────────────────────────────────────────────────────────────
   readonly hasActiveFilters = computed(
     () =>
       this.selectedCategories().length > 0 ||
@@ -62,7 +54,6 @@ export class FilterComponent {
 
   readonly stars = [1, 2, 3, 4, 5];
 
-  // ── Emit on every change ──────────────────────────────────────────────────
   constructor() {
     effect(() => {
       this.filterChange.emit({
@@ -74,7 +65,6 @@ export class FilterComponent {
     });
   }
 
-  // ── Actions ───────────────────────────────────────────────────────────────
   toggleCategory(category: string): void {
     this.selectedCategories.update((cats) =>
       cats.includes(category) ? cats.filter((c) => c !== category) : [...cats, category],
@@ -87,18 +77,17 @@ export class FilterComponent {
 
   onPriceMinChange(event: Event): void {
     const val = +(event.target as HTMLInputElement).value;
-    // prevent min from exceeding max
+
     this.priceMin.set(Math.min(val, this.priceMax() - 1));
   }
 
   onPriceMaxChange(event: Event): void {
     const val = +(event.target as HTMLInputElement).value;
-    // prevent max from going below min
+
     this.priceMax.set(Math.max(val, this.priceMin() + 1));
   }
 
   setRating(rating: number): void {
-    // clicking the same rating again clears it
     this.ratingMin.set(this.ratingMin() === rating ? 0 : rating);
   }
 

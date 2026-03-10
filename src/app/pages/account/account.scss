@@ -15,7 +15,6 @@ $font-display: 'Playfair Display', Georgia, serif;
 $font-body: 'DM Sans', system-ui, sans-serif;
 $radius: 10px;
 
-// ─── Reset ───────────────────────────────────────────────────────────────────
 *,
 *::before,
 *::after {
@@ -67,7 +66,6 @@ input {
   }
 }
 
-// ─── Sidebar ─────────────────────────────────────────────────────────────────
 .sidebar {
   display: flex;
   flex-direction: column;

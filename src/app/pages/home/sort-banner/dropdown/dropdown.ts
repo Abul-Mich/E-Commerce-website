@@ -1,4 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
+import { SortOption } from '../sort-banner';
+
+interface SortOptionItem {
+  label: string;
+  value: SortOption;
+}
 
 @Component({
   selector: 'app-custom-dropdown',
@@ -7,26 +13,26 @@ import { Component, signal } from '@angular/core';
   styleUrls: ['./dropdown.scss'],
 })
 export class DropdownComponent {
-  sortOptions = signal([
+  readonly sortChanged = output<SortOption>();
+
+  readonly sortOptions = signal<SortOptionItem[]>([
+    { label: 'Best Selling', value: 'best-selling' },
     { label: 'Price: Low to High', value: 'price-asc' },
     { label: 'Price: High to Low', value: 'price-desc' },
     { label: 'Newest', value: 'newest' },
+    { label: 'Top Rated', value: 'rating' },
   ]);
 
-  selectedOption = signal<{ label: string; value: string } | null>(this.sortOptions()[0]);
-  isOpen = signal(false);
+  readonly selectedOption = signal<SortOptionItem>(this.sortOptions()[0]);
+  readonly isOpen = signal(false);
 
-  toggleDropdown() {
+  toggleDropdown(): void {
     this.isOpen.update((v) => !v);
   }
 
-  selectOption(option: any) {
+  selectOption(option: SortOptionItem): void {
     this.selectedOption.set(option);
     this.isOpen.set(false);
-    this.onSortChange(option.value);
-  }
-
-  onSortChange(value: string) {
-    console.log('Sort changed:', value);
+    this.sortChanged.emit(option.value);
   }
 }

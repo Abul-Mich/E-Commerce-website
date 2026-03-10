@@ -1,7 +1,3 @@
-// profile-dropdown.component.scss
-// Matches the Fake Store design system (teal palette, DM Sans, Playfair Display)
-
-// ─── Tokens (mirror your global variables) ──────────────────────────────────
 $teal: #008174;
 $teal-hover: rgba(0, 129, 116, 0.08);
 $blue-border: #3bbcd6;
@@ -18,14 +14,12 @@ $shadow:
   0 12px 40px rgba(0, 0, 0, 0.1),
   0 2px 12px rgba(0, 0, 0, 0.06);
 
-// ─── Wrapper ─────────────────────────────────────────────────────────────────
 .profile-dropdown {
   position: relative;
   display: inline-flex;
   font-family: $font-body;
 }
 
-// ─── Trigger button — no colors at rest ─────────────────────────────────────
 .profile-trigger {
   display: flex;
   align-items: center;
@@ -40,7 +34,6 @@ $shadow:
     border-color 0.2s;
   outline: none;
 
-  // No colors on hover either — just a very subtle neutral tint
   &:hover {
     background: rgba(0, 0, 0, 0.04);
     border-color: rgba(0, 0, 0, 0.08);
@@ -56,7 +49,7 @@ $shadow:
     height: 32px;
     border-radius: 50%;
     overflow: hidden;
-    background: white; // neutral grey — no teal at rest
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -72,21 +65,18 @@ $shadow:
   &__caret {
     width: 14px;
     height: 14px;
-    color: $text-light; // neutral grey — no teal at rest
+    color: $text-light;
     flex-shrink: 0;
     transition:
       transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
       color 0.2s;
 
-    // Only show teal caret when dropdown is open
     .profile-dropdown--open & {
       transform: rotate(180deg);
-      // color: $teal;
     }
   }
 }
 
-// ─── Dropdown panel ──────────────────────────────────────────────────────────
 .dropdown {
   position: absolute;
   top: calc(100% + 10px);
@@ -113,7 +103,6 @@ $shadow:
     pointer-events: all;
   }
 
-  // ── Header ──────────────────────────────────────────────────────────────
   &__header {
     display: flex;
     align-items: center;
@@ -158,7 +147,7 @@ $shadow:
   &__username {
     font-size: 0.78rem;
     font-weight: 500;
-    // color: $teal; // teal only INSIDE the open dropdown
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -178,14 +167,12 @@ $shadow:
     line-height: 1.6;
   }
 
-  // ── Divider ─────────────────────────────────────────────────────────────
   &__divider {
     height: 1px;
     background: #eef1f7;
     margin: 2px 4px;
   }
 
-  // ── Menu items ──────────────────────────────────────────────────────────
   &__item {
     display: flex;
     align-items: center;
@@ -220,7 +207,6 @@ $shadow:
       min-width: 0;
     }
 
-    // Profile item hover — #008174
     &:hover:not(&--danger) {
       background: $teal-hover;
       color: $teal;
@@ -230,7 +216,6 @@ $shadow:
       }
     }
 
-    // Arrow icon (profile item only)
     &-arrow {
       width: 14px !important;
       height: 14px !important;
@@ -249,7 +234,6 @@ $shadow:
       transform: translateX(0);
     }
 
-    // Sign out hover — red
     &--danger {
       color: $text-mid;
 

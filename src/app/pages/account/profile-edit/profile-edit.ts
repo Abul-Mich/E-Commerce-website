@@ -1,6 +1,4 @@
-// profile-edit.component.ts
-
-import { Component, inject, signal, computed, DestroyRef } from '@angular/core';
+import { Component, inject, signal, DestroyRef } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -8,13 +6,12 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { IUserRequest, IUserResponse } from '../../../core/models/User';
+import { IUserResponse } from '../../../core/models/User';
 import { UpdateUserPayload, UserService } from '../../../core/services/user';
 import { AccountComponent } from '../account';
 
-// ── Custom validator: confirm password must match new password ───────────────
 function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
   const newPw = group.get('newPassword')?.value;
   const confirm = group.get('confirmPassword')?.value;
@@ -34,7 +31,6 @@ export class ProfileEditComponent {
   private readonly userService = inject(UserService);
   private readonly destroyRef = inject(DestroyRef);
 
-  // ── UI state ──────────────────────────────────────────────────────────────
   private readonly storedUser = this.getStoredUser();
   readonly isLoading = signal(false);
   readonly saveSuccess = signal(false);
@@ -43,8 +39,6 @@ export class ProfileEditComponent {
   readonly showCurrentPw = signal(false);
   readonly showNewPw = signal(false);
   readonly showConfirmPw = signal(false);
-
-  // ── Load stored user — called ONCE ────────────────────────────────────────
 
   private getStoredUser() {
     try {
@@ -59,13 +53,12 @@ export class ProfileEditComponent {
     return this.storedUser?.image || '';
   }
 
-  // ── Form ──────────────────────────────────────────────────────────────────
   readonly form = this.fb.group({
     firstName: [this.storedUser?.firstName ?? '', [Validators.required]],
     lastName: [this.storedUser?.lastName ?? '', [Validators.required]],
     username: [this.storedUser?.username ?? '', [Validators.required, Validators.minLength(3)]],
     email: [this.storedUser?.email ?? '', [Validators.required, Validators.email]],
-    dateOfBirth: [this.storedUser?.dateOfBirth?.slice(0, 10) ?? ''], // ← strip time part
+    dateOfBirth: [this.storedUser?.dateOfBirth?.slice(0, 10) ?? ''],
 
     passwords: this.fb.group(
       {
@@ -81,7 +74,6 @@ export class ProfileEditComponent {
     return this.form.get('passwords')!;
   }
 
-  // ── Avatar upload ─────────────────────────────────────────────────────────
   onAvatarChange(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
@@ -91,7 +83,6 @@ export class ProfileEditComponent {
     reader.readAsDataURL(file);
   }
 
-  // ── Submit ────────────────────────────────────────────────────────────────
   onSubmit(): void {
     if (this.form.invalid) return;
 
@@ -118,14 +109,12 @@ export class ProfileEditComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (updatedUser: IUserResponse) => {
-          // Persist updated user back to localStorage
           const current = this.storedUser;
           localStorage.setItem('auth_user', JSON.stringify({ ...current, ...updatedUser }));
 
           this.saveSuccess.set(true);
           this.isLoading.set(false);
 
-          // Reset password fields after success
           this.pw.reset();
 
           setTimeout(() => this.saveSuccess.set(false), 3000);

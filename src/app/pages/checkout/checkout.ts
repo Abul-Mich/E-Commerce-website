@@ -1,10 +1,7 @@
-// checkout.component.ts
-
 import { Component, inject, signal, computed, DestroyRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-// import { PaymentCard } from '../payment-options/payment-options.component'; // adjust path
 import { CartService } from '../../core/services/cart';
 import { PaymentCard } from '../account/payment-options/payment-options';
 
@@ -20,21 +17,13 @@ export class CheckoutComponent {
   private readonly destroyRef = inject(DestroyRef);
   readonly cart = inject(CartService);
 
-  // ── Payment cards from localStorage ───────────────────────────────────────
   readonly cards = signal<PaymentCard[]>(this.loadCards());
-  readonly selectedCardId = signal<string | null>(
-    localStorage.getItem('default_payment_id'), // ← pre-select from stored ID
-  );
+  readonly selectedCardId = signal<string | null>(localStorage.getItem('default_payment_id'));
 
-  // ── UI state ──────────────────────────────────────────────────────────────
-  // readonly selectedCardId = signal<string | null>(
-  //   this.loadCards().find((c) => c.isDefault)?.id ?? null,
-  // );
   readonly isLoading = signal(false);
   readonly error = signal('');
   readonly success = signal(false);
 
-  // ── Computed ──────────────────────────────────────────────────────────────
   readonly selectedCard = computed(
     () => this.cards().find((c) => c.id === this.selectedCardId()) ?? null,
   );
@@ -47,7 +36,6 @@ export class CheckoutComponent {
     () => !!this.selectedCardId() && this.cart.hasItems() && !this.isLoading(),
   );
 
-  // ── Load cards from localStorage ──────────────────────────────────────────
   private loadCards(): PaymentCard[] {
     try {
       const raw = localStorage.getItem('payment_cards');
@@ -57,7 +45,6 @@ export class CheckoutComponent {
     }
   }
 
-  // ── Actions ───────────────────────────────────────────────────────────────
   selectCard(id: string): void {
     this.selectedCardId.set(id);
   }
@@ -72,7 +59,7 @@ export class CheckoutComponent {
       .checkout()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (res) => {
+        next: () => {
           this.success.set(true);
           this.isLoading.set(false);
           setTimeout(() => this.router.navigate(['/']), 1500);
@@ -84,7 +71,6 @@ export class CheckoutComponent {
       });
   }
 
-  // ── Formatting ────────────────────────────────────────────────────────────
   formatPrice(n: number): string {
     return n.toFixed(2);
   }

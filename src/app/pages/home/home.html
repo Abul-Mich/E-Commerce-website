@@ -8,7 +8,14 @@
   />
 
   <div class="home__main" id="products-section">
-    <app-sort-banner />
-    <app-products [filters]="activeFilters()" />
+    <app-sort-banner
+      (sortChanged)="onSortChange($event)"
+      (viewModeChanged)="onViewModeChange($event)"
+    />
+    <app-products
+      [filters]="activeFilters()"
+      [sort]="activeSort()"
+      [viewMode]="activeViewMode()"
+    />
   </div>
 </div>

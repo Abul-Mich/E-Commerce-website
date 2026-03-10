@@ -1,1 +1,120 @@
-<ag-grid-angular [rowData]="rowData()" [columnDefs]="colDefs" pagination="true" />
+<div class="dashboard">
+  <div class="dashboard__header">
+    <div>
+      <h1 class="dashboard__title">Product Dashboard</h1>
+      <p class="dashboard__sub">Overview of your entire product catalog</p>
+    </div>
+    <button class="export-btn" (click)="exportCsv()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+      </svg>
+      Export CSV
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card stat-card--primary">
+      <div class="stat-card__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <path d="M16 10a4 4 0 0 1-8 0" />
+        </svg>
+      </div>
+      <div class="stat-card__body">
+        <span class="stat-card__label">Total Products</span>
+        <span class="stat-card__value">{{ stats().total }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card__icon stat-card__icon--amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <line x1="12" y1="1" x2="12" y2="23" />
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+        </svg>
+      </div>
+      <div class="stat-card__body">
+        <span class="stat-card__label">Average Price</span>
+        <span class="stat-card__value">${{ stats().avgPrice | number: '1.2-2' }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card__icon stat-card__icon--green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+          />
+        </svg>
+      </div>
+      <div class="stat-card__body">
+        <span class="stat-card__label">Top Rated (4★+)</span>
+        <span class="stat-card__value">{{ stats().topRated }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card__icon stat-card__icon--blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+      </div>
+      <div class="stat-card__body">
+        <span class="stat-card__label">Categories</span>
+        <span class="stat-card__value">{{ stats().categories }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8" />
+        <path d="M21 21l-4.35-4.35" />
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search products or categories..."
+        (input)="onSearch($event)"
+      />
+    </div>
+
+    <div class="category-pills">
+      @for (cat of categories(); track cat) {
+        <button
+          class="pill"
+          [class.pill--active]="activeCategory() === cat"
+          (click)="setCategory(cat)"
+        >
+          {{ formatLabel(cat) }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="result-count">
+    Showing <strong>{{ rowData().length }}</strong> of <strong>{{ stats().total }}</strong> products
+  </div>
+
+  <div class="grid-wrapper">
+    <ag-grid-angular
+      style="width: 100%; height: 620px"
+      [theme]="theme"
+      [rowData]="rowData()"
+      [columnDefs]="colDefs"
+      [pagination]="true"
+      [paginationPageSize]="10"
+      [paginationPageSizeSelector]="[10, 25, 50]"
+      [rowHeight]="56"
+      [headerHeight]="44"
+      [suppressCellFocus]="true"
+      (gridReady)="onGridReady($event)"
+    />
+  </div>
+</div>

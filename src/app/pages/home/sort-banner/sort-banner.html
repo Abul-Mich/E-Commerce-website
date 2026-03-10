@@ -1,12 +1,12 @@
 <div class="sort-toolbar">
   <div class="sort-toolbar__left">
-    <app-custom-dropdown></app-custom-dropdown>
+    <app-custom-dropdown (sortChanged)="onSortChange($event)" />
   </div>
 
   <div class="sort-toolbar__right">
     <button
       class="sort-toolbar__view-btn"
-      [class.sort-toolbar__view-btn--active]="viewMode === 'grid'"
+      [class.sort-toolbar__view-btn--active]="viewMode() === 'grid'"
       (click)="setViewMode('grid')"
       title="Grid view"
     >
@@ -20,7 +20,7 @@
 
     <button
       class="sort-toolbar__view-btn"
-      [class.sort-toolbar__view-btn--active]="viewMode === 'list'"
+      [class.sort-toolbar__view-btn--active]="viewMode() === 'list'"
       (click)="setViewMode('list')"
       title="List view"
     >

@@ -7,6 +7,7 @@ import { IUser } from '../../models/user';
 import { ILoginResponse, ILoginRequest } from '../models/Login';
 import { IUserRequest, IUserResponse } from '../models/User';
 import { jwtDecode } from 'jwt-decode';
+import { CartService } from './cart';
 
 @Injectable({
   providedIn: 'root',
@@ -15,15 +16,12 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly cookieService = inject(CookieService);
+  private readonly cartService = inject(CartService);
 
   private readonly API_BASE = 'https://melaine-palaeobiologic-savourily.ngrok-free.dev/api';
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
   private readonly COOKIE_OPTIONS = { expires: 7, sameSite: 'Strict' as const, secure: true };
-
-  // ---------------------------------------------------------------------------
-  // Reactive State (Signals)
-  // ---------------------------------------------------------------------------
 
   private _token = signal<string | null>(null);
   private _currentUser = signal<IUser | null>(null);
@@ -37,7 +35,6 @@ export class AuthService {
   });
 
   constructor() {
-    // Hydrate signals from persisted storage on service instantiation
     const storedToken = this.cookieService.get(this.TOKEN_KEY) || null;
     this._token.set(storedToken);
     this._currentUser.set(this.loadUser());
@@ -48,9 +45,6 @@ export class AuthService {
     return user?.role === 'admin';
   }
 
-  // ---------------------------------------------------------------------------
-  // Authentication
-  // ---------------------------------------------------------------------------
   register(userData: IUserRequest): Observable<IUserResponse> {
     return this.http.post<IUserResponse>(`${this.API_BASE}/auth/register`, userData).pipe(
       catchError((err) => {
@@ -90,13 +84,9 @@ export class AuthService {
     this.clearSession();
     localStorage.removeItem('payment_cards');
     localStorage.removeItem('default_payment_id');
-    localStorage.removeItem('cart');
+    this.cartService.clearCart();
     this.router.navigate(['/']);
   }
-
-  // ---------------------------------------------------------------------------
-  // Token Management (Cookie-backed)
-  // ---------------------------------------------------------------------------
 
   getToken(): string | null {
     return this._token();
@@ -111,10 +101,6 @@ export class AuthService {
     this.cookieService.delete(this.TOKEN_KEY);
     this._token.set(null);
   }
-
-  // ---------------------------------------------------------------------------
-  // User Management (localStorage-backed)
-  // ---------------------------------------------------------------------------
 
   private persistUser(user: IUser): void {
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
@@ -140,18 +126,10 @@ export class AuthService {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // Session Reset
-  // ---------------------------------------------------------------------------
-
   private clearSession(): void {
     this.removeToken();
     this.removeUser();
   }
-
-  // ---------------------------------------------------------------------------
-  // JWT Utilities
-  // ---------------------------------------------------------------------------
 
   decodeToken(token: string): Record<string, unknown> | null {
     try {
@@ -175,14 +153,6 @@ export class AuthService {
     if (!decoded || typeof decoded['exp'] !== 'number') return null;
     return new Date(decoded['exp'] * 1000);
   }
-
-  // hasRole(role: string): boolean {
-  //   return this._currentUser()?.roles?.includes(role) ?? false;
-  // }
-
-  // ---------------------------------------------------------------------------
-  // Helpers
-  // ---------------------------------------------------------------------------
 
   private parseRoles(raw: unknown): string[] {
     if (Array.isArray(raw)) return raw as string[];

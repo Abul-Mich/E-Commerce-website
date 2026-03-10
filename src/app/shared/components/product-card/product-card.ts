@@ -1,8 +1,7 @@
 import { Component, inject, input } from '@angular/core';
 import { IProduct } from '../../../models/product';
-import { ProductService } from '../../../core/services/product.service';
 import { Router } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ViewMode } from '../../../pages/home/sort-banner/sort-banner';
 
 @Component({
   selector: 'app-product-card',
@@ -13,9 +12,17 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class ProductCard {
   private readonly router = inject(Router);
 
-  product = input.required<IProduct>();
+  readonly product = input.required<IProduct>();
+  readonly viewMode = input<ViewMode>('grid');
 
-  onCardClick(product: IProduct): void {
-    this.router.navigate(['/products', product.id]);
+  get stars(): string {
+    const rate = this.product().rating.rate;
+    const full = Math.floor(rate);
+    const half = rate % 1 >= 0.5;
+    return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
+  }
+
+  onCardClick(): void {
+    this.router.navigate(['/products', this.product().id]);
   }
 }

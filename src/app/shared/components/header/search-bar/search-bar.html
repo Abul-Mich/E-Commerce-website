@@ -1,8 +1,4 @@
-<!-- search-bar.component.html -->
-
-<!-- ── Desktop search bar ───────────────────────────────────────────────── -->
 <div class="search-bar search-bar--desktop" [class.search-bar--focused]="isFocused()">
-  <!-- Search icon -->
   <svg
     class="search-bar__icon"
     viewBox="0 0 24 24"
@@ -14,7 +10,6 @@
     <path d="M21 21l-4.35-4.35" />
   </svg>
 
-  <!-- Input -->
   <input
     type="text"
     class="search-bar__input"
@@ -27,7 +22,6 @@
     aria-label="Search products"
   />
 
-  <!-- Clear button -->
   @if (searchValue) {
     <button class="search-bar__clear" (click)="clear()" aria-label="Clear search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -38,7 +32,6 @@
   }
 </div>
 
-<!-- ── Mobile toggle button (icon only) ─────────────────────────────────── -->
 <button class="search-bar__mobile-toggle" (click)="toggleMobile()" aria-label="Open search">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <circle cx="11" cy="11" r="8" />
@@ -46,7 +39,6 @@
   </svg>
 </button>
 
-<!-- ── Mobile expanded bar (rendered below header via position) ──────────── -->
 @if (mobileOpen()) {
   <div class="search-bar search-bar--mobile">
     <svg

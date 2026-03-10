@@ -1,63 +1,85 @@
+$teal: #008174;
+$teal-light: rgba(0, 129, 116, 0.08);
+$text-dark: #1a1f2e;
+$text-mid: #5a6278;
+$text-light: #9aa3bb;
+$white: #ffffff;
+$border: #eef1f7;
+$font-body: 'DM Sans', system-ui, sans-serif;
+
 .dropdown {
   position: relative;
   width: 220px;
   cursor: pointer;
   user-select: none;
+  font-family: $font-body;
 }
 
 .selected {
   padding: 10px 14px;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  background: #fff;
+  border: 1.5px solid $border;
+  border-radius: 8px;
+  background: $white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
+  font-size: 0.875rem;
+  color: $text-dark;
+  transition: border-color 0.2s;
 
-.selected:hover {
-  border-color: #d0d0d0;
+  &:hover {
+    border-color: rgba($teal, 0.4);
+  }
 }
 
 .dropdown:hover .arrow {
   transform: rotate(180deg);
+  color: $teal;
 }
+
 .arrow {
   width: 14px;
   height: 14px;
-  transition: transform 0.2s ease;
-  transition-delay: 0.1s;
-
-  //   transform: translateY(-50%);
+  color: $text-light;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 
 .dropdown ul.options {
   position: absolute;
   width: 100%;
   margin: 4px 0 0 0;
-  padding: 0;
+  padding: 6px;
   list-style: none;
-  border-radius: 12px;
-  border: 1px solid #e5e5e5;
-  background: #fff;
-  max-height: 180px;
+  border-radius: 10px;
+  border: 1.5px solid $border;
+  background: $white;
+  max-height: 200px;
   overflow-y: auto;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   z-index: 100;
 }
 
 .option {
-  padding: 10px 14px;
-  transition: background 0.2s ease;
+  padding: 9px 10px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: $text-mid;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .option:hover {
-  background: #f5f5f5;
+  background: $teal-light;
+  color: $teal;
 }
 
 .option.active {
   font-weight: 600;
-  background: #f0f0f0;
+  color: $teal;
+  background: $teal-light;
 }
 
 .options {

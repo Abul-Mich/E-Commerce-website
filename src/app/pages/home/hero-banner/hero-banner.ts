@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, DestroyRef, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
 
 interface Countdown {
   days: string;
@@ -11,56 +12,46 @@ interface Countdown {
 @Component({
   selector: 'app-hero-banner',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './hero-banner.html',
   styleUrl: './hero-banner.scss',
 })
-export class HeroBannerComponent implements OnInit, OnDestroy {
-  // Sale ends 4 days from now
-  private saleEndDate = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
-  private intervalId: ReturnType<typeof setInterval> | null = null;
+export class HeroBannerComponent {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly saleEndDate = this.loadOrCreateSaleEnd();
 
-  countdown: Countdown = {
-    days: '00',
-    hours: '00',
-    minutes: '00',
-    seconds: '00',
-  };
+  private loadOrCreateSaleEnd(): Date {
+    const stored = localStorage.getItem('sale_end_date');
+    if (stored) return new Date(stored);
 
-  ngOnInit(): void {
-    this.updateCountdown();
-    this.intervalId = setInterval(() => this.updateCountdown(), 1000);
+    const end = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
+    localStorage.setItem('sale_end_date', end.toISOString());
+    return end;
+  }
+  readonly countdown = signal<Countdown>(this.computeCountdown());
+
+  constructor() {
+    interval(1000)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.countdown.set(this.computeCountdown()));
   }
 
-  ngOnDestroy(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
-  }
-
-  private updateCountdown(): void {
-    const now = new Date().getTime();
-    const distance = this.saleEndDate.getTime() - now;
+  private computeCountdown(): Countdown {
+    const distance = this.saleEndDate.getTime() - Date.now();
 
     if (distance <= 0) {
-      this.countdown = { days: '00', hours: '00', minutes: '00', seconds: '00' };
-      return;
+      localStorage.removeItem('sale_end_date');
+      return { days: '00', hours: '00', minutes: '00', seconds: '00' };
     }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    this.countdown = {
-      days: String(days).padStart(2, '0'),
-      hours: String(hours).padStart(2, '0'),
-      minutes: String(minutes).padStart(2, '0'),
-      seconds: String(seconds).padStart(2, '0'),
+    return {
+      days: String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0'),
+      hours: String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(
+        2,
+        '0',
+      ),
+      minutes: String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0'),
+      seconds: String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0'),
     };
-  }
-
-  onShopNow(): void {
-    // Navigate to products page
   }
 }

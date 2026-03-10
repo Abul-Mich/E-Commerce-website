@@ -7,10 +7,8 @@ import { Component, computed, signal } from '@angular/core';
   styleUrl: './add-button.scss',
 })
 export class AddButton {
-  // Reactive quantity state
   private quantity = signal(0);
 
-  // Public readonly computed value (cleaner template usage)
   readonly qty = computed(() => this.quantity());
 
   add() {

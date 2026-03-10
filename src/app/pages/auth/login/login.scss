@@ -9,8 +9,8 @@ $text-light: #9aa3bb;
 $bg-page: #e8f5f0;
 $white: #ffffff;
 $radius-card: 18px;
-$radius-btn: 6px;
-$radius-field: 6px;
+$radius-btn: 8px;
+$radius-field: 8px;
 $shadow-card:
   0 20px 60px rgba(26, 171, 138, 0.12),
   0 4px 16px rgba(0, 0, 0, 0.06);
@@ -125,7 +125,7 @@ input {
     height: 5px;
     border-radius: 50%;
     background: $color;
-    grid-column: 1 / -1; // handled via box-shadow trick below
+    grid-column: 1 / -1;
   }
 }
 
@@ -136,7 +136,6 @@ input {
   grid-template-rows: repeat(4, 6px);
   gap: 7px;
 
-  // Generate 16 dots via children
   $n: 16;
   @for $i from 1 through $n {
     span:nth-child(#{$i}) {
@@ -153,7 +152,6 @@ input {
     left: 16px;
   }
 
-  // Inline dot generation with box-shadow hack
   &::after {
     content: '';
     display: block;
@@ -196,6 +194,9 @@ input {
   font-weight: 700;
   color: $text-dark;
   letter-spacing: -0.02em;
+  span {
+    color: $teal;
+  }
 }
 
 .card__tagline {
@@ -266,7 +267,6 @@ input {
       box-shadow: 0 0 0 3px rgba($teal, 0.12);
       background: $white;
 
-      // Make the sibling icon teal on focus
       & ~ .field__icon,
       + .field__icon {
         color: $teal;
@@ -301,7 +301,6 @@ input {
     }
   }
 
-  // Adjust icon position when there's also a toggle button
   &__wrap:has(.field__toggle) .field__icon {
     pointer-events: none;
   }
@@ -351,7 +350,6 @@ input {
   }
 }
 
-// Ripple effect
 .ripple {
   position: absolute;
   border-radius: 50%;

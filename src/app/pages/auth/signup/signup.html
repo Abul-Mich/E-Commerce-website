@@ -7,7 +7,7 @@
     <div class="dots dots--bl" aria-hidden="true"></div>
 
     <div class="card__brand">
-      <h1 class="brand-name">Fake Store</h1>
+      <h1 class="brand-name">Fake<span>Store</span></h1>
     </div>
 
     <p class="card__tagline">Create your account — it's free!</p>
@@ -38,6 +38,19 @@
               "
             />
           </div>
+          @if (signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched) {
+            <div class="error-message">
+              @if (signupForm.get('firstName')?.hasError('required')) {
+                <small>First name is required</small>
+              }
+              @if (signupForm.get('firstName')?.hasError('minlength')) {
+                <small>First name must be at least 2 characters</small>
+              }
+              @if (signupForm.get('firstName')?.hasError('whitespace')) {
+                <small>First name cannot contain whitespace</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="field">
@@ -64,6 +77,19 @@
               "
             />
           </div>
+          @if (signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched) {
+            <div class="error-message">
+              @if (signupForm.get('lastName')?.hasError('required')) {
+                <small>Last name is required</small>
+              }
+              @if (signupForm.get('lastName')?.hasError('minlength')) {
+                <small>Last name must be at least 2 characters</small>
+              }
+              @if (signupForm.get('lastName')?.hasError('whitespace')) {
+                <small>Last name cannot contain whitespace</small>
+              }
+            </div>
+          }
         </div>
       </div>
 
@@ -79,8 +105,6 @@
           >
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
             <circle cx="12" cy="7" r="4" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            <path d="M21 21v-2a4 4 0 0 0-3-3.85" />
           </svg>
           <span class="field__prefix">@</span>
           <input
@@ -161,7 +185,7 @@
             [type]="showPassword() ? 'text' : 'password'"
             formControlName="password"
             class="field__input"
-            autocomplete="current-password"
+            autocomplete="new-password"
             [class.error]="
               signupForm.get('password')?.invalid && signupForm.get('password')?.touched
             "
@@ -170,7 +194,7 @@
             type="button"
             class="field__toggle"
             aria-label="Show password"
-            (click)="togglefieldVisibility(showPassword)"
+            (click)="toggleVisibility('password')"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               @if (showPassword()) {
@@ -263,8 +287,8 @@
           <button
             type="button"
             class="field__toggle"
-            aria-label="Show password"
-            (click)="togglefieldVisibility(showConfirmPassword)"
+            aria-label="Show confirm password"
+            (click)="toggleVisibility('confirm')"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               @if (showConfirmPassword()) {
@@ -279,36 +303,37 @@
             </svg>
           </button>
         </div>
-        <span class="field__match" id="matchMsg"></span>
         @if (
           signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched
         ) {
-          <div class="error-message">
-            <small *ngIf="signupForm.get('confirmPassword')?.hasError('required')"
-              >Confirm password is required</small
-            >
-          </div>
+          <div class="error-message"><small>Confirm password is required</small></div>
         }
         @if (
           signupForm.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched
         ) {
-          <div class="error-message">
-            <small>Passwords do not match</small>
-          </div>
+          <div class="error-message"><small>Passwords do not match</small></div>
         }
       </div>
 
-      <button type="submit" class="btn btn--primary" [disabled]="signupForm.invalid">
-        <span>Create Account</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <path d="M5 12h14M13 6l6 6-6 6" />
-        </svg>
+      @if (signupSuccess()) {
+        <div class="message__success">Registration successful! Redirecting...</div>
+      } @else if (error()) {
+        <div class="message message__error">{{ error() }}</div>
+      }
+
+      <button type="submit" class="btn btn--primary" [disabled]="signupForm.invalid || isLoading()">
+        @if (isLoading()) {
+          <span>Creating Account...</span>
+        } @else {
+          <span>Create Account</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        }
       </button>
     </form>
 
-    <div class="divider">
-      <span>or sign up with</span>
-    </div>
+    <div class="divider"><span>or sign up with</span></div>
 
     <div class="social">
       <button class="social__btn social__btn--gg" aria-label="Sign up with Google">
@@ -326,8 +351,5 @@
         Already a member? <a routerLink="/login" class="link link--accent">Sign In</a>
       </p>
     </div>
-    @if (signupSuccess) {
-      <div class="success-message">Registration successful! Redirecting to login...</div>
-    }
   </main>
 </div>

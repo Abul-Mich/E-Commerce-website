@@ -1,7 +1,5 @@
-// cart-drawer.component.ts
-
-import { Component, inject, signal, computed, output, input } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject, computed, output, input } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartService, CartItem } from '../../../core/services/cart';
 
 @Component({
@@ -15,14 +13,11 @@ export class CartDrawerComponent {
   private readonly router = inject(Router);
   readonly cart = inject(CartService);
 
-  // ── Inputs / Outputs ──────────────────────────────────────────────────────
   readonly isOpen = input<boolean>(false);
   readonly closed = output<void>();
 
-  // ── Derived ───────────────────────────────────────────────────────────────
   readonly formattedTotal = computed(() => this.cart.totalPrice().toFixed(2));
 
-  // ── Actions ───────────────────────────────────────────────────────────────
   close(): void {
     this.closed.emit();
   }

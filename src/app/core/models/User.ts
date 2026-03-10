@@ -8,7 +8,7 @@ export interface IUserResponse {
   dateOfBirth: string;
   imageUrl: string;
   createdAt: string;
-  upstringdAt: string;
+  updatedAt: string;
 }
 
 export interface IUserRequest {

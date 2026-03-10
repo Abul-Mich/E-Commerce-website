@@ -1,7 +1,6 @@
 import { Component, signal, computed } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { AccountComponent } from '../account';
 import { AuthService } from '../../../core/services/auth-service';
 
@@ -34,7 +33,6 @@ export class PaymentOptionsComponent {
     return `${this.user?.firstName ?? ''} ${this.user?.lastName ?? ''}`.trim();
   }
 
-  // ── Load from localStorage instead of hardcoded mock ─────────────────────
   readonly cards = signal<PaymentCard[]>(this.loadCards());
 
   readonly showAddForm = signal(false);
@@ -45,7 +43,6 @@ export class PaymentOptionsComponent {
 
   readonly defaultCard = computed(() => this.cards().find((c) => c.isDefault) ?? null);
 
-  // ── localStorage helpers ──────────────────────────────────────────────────
   private loadCards(): PaymentCard[] {
     try {
       const raw = localStorage.getItem(CARDS_KEY);
@@ -59,16 +56,14 @@ export class PaymentOptionsComponent {
     localStorage.setItem(CARDS_KEY, JSON.stringify(cards));
   }
 
-  // ── Form ──────────────────────────────────────────────────────────────────
   readonly form = this.fb.group({
     holder: ['', [Validators.required]],
     number: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
     expMonth: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])$/)]],
     expYear: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
-    cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
+    cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
   });
 
-  // ── Helpers ───────────────────────────────────────────────────────────────
   cardTypeFromNumber(number: string): PaymentCard['type'] {
     if (number.startsWith('4')) return 'visa';
     if (/^5[1-5]/.test(number)) return 'mastercard';
@@ -80,13 +75,12 @@ export class PaymentOptionsComponent {
     return `•••• •••• •••• ${last4}`;
   }
 
-  // ── Actions ───────────────────────────────────────────────────────────────
   openAddForm(): void {
     this.form.reset();
     this.editingId.set(null);
     this.showAddForm.set(true);
     this.error.set('');
-    // pre-fill holder with user's full name
+
     this.form.patchValue({ holder: this.fullName });
   }
 
@@ -132,18 +126,17 @@ export class PaymentOptionsComponent {
         holder: holder!,
         expMonth: expMonth!,
         expYear: expYear!,
-        isDefault: this.cards().length === 0, // first card becomes default
+        isDefault: this.cards().length === 0,
       };
       updated = [...this.cards(), newCard];
 
-      // auto-save default_payment_id if this is the first card
       if (newCard.isDefault) {
         localStorage.setItem('default_payment_id', newCard.id);
       }
     }
 
     this.cards.set(updated);
-    this.syncCards(updated); // ← persist to localStorage
+    this.syncCards(updated);
 
     this.saveSuccess.set(true);
     this.cancelForm();
@@ -153,8 +146,8 @@ export class PaymentOptionsComponent {
   setDefault(id: string): void {
     const updated = this.cards().map((c) => ({ ...c, isDefault: c.id === id }));
     this.cards.set(updated);
-    this.syncCards(updated); // ← persist cards
-    localStorage.setItem('default_payment_id', id); // ← persist default id
+    this.syncCards(updated);
+    localStorage.setItem('default_payment_id', id);
   }
 
   confirmDelete(id: string): void {
@@ -167,7 +160,7 @@ export class PaymentOptionsComponent {
 
   deleteCard(id: string): void {
     const wasDefault = this.cards().find((c) => c.id === id)?.isDefault;
-    let remaining = this.cards().filter((c) => c.id !== id);
+    const remaining = this.cards().filter((c) => c.id !== id);
 
     if (wasDefault && remaining.length > 0) {
       remaining[0] = { ...remaining[0], isDefault: true };
@@ -179,7 +172,7 @@ export class PaymentOptionsComponent {
     }
 
     this.cards.set(remaining);
-    this.syncCards(remaining); // ← persist to localStorage
+    this.syncCards(remaining);
     this.deleteConfirm.set(null);
   }
 }

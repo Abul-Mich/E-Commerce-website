@@ -1,13 +1,12 @@
-import { Component, DestroyRef, inject, signal, WritableSignal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import {
   passwordMatchValidator,
   strongPasswordValidator,
   noWhitespaceValidator,
 } from '../../../shared/validators/custom-validators';
-import { first, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { AuthService } from '../../../core/services/auth-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IUserRequest } from '../../../core/models/User';
@@ -15,7 +14,7 @@ import { IUserRequest } from '../../../core/models/User';
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './signup.html',
   styleUrl: './signup.scss',
 })
@@ -24,8 +23,12 @@ export class SignupComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
-  showPassword = signal(false);
-  showConfirmPassword = signal(false);
+
+  readonly showPassword = signal(false);
+  readonly showConfirmPassword = signal(false);
+  readonly signupSuccess = signal(false);
+  readonly isLoading = signal(false);
+  readonly error = signal('');
 
   readonly signupForm = this.fb.group(
     {
@@ -39,39 +42,40 @@ export class SignupComponent {
     { validators: passwordMatchValidator() },
   );
 
-  signupSuccess = false;
-  isLoading = false;
-
   onSubmit(): void {
-    if (this.signupForm.valid) {
-      const { confirmPassword, ...registerPayload } = this.signupForm.value;
-      this.isLoading = true;
+    if (this.signupForm.invalid) return;
 
-      this.authService
-        .register(registerPayload as IUserRequest)
-        .pipe(
-          switchMap(() =>
-            this.authService.login({
-              email: this.signupForm.value.email!,
-              password: this.signupForm.value.password!,
-            }),
-          ),
-          takeUntilDestroyed(this.destroyRef),
-        )
-        .subscribe({
-          next: () => {
-            this.signupSuccess = true;
-            this.isLoading = false;
-            setTimeout(() => this.router.navigate(['/products']), 2000);
-          },
-          error: (err) => {
-            console.error('Signup or login failed', err);
-            this.isLoading = false;
-          },
-        });
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword, ...registerPayload } = this.signupForm.value;
+    this.isLoading.set(true);
+    this.error.set('');
+
+    this.authService
+      .register(registerPayload as IUserRequest)
+      .pipe(
+        switchMap(() =>
+          this.authService.login({
+            email: this.signupForm.value.email!,
+            password: this.signupForm.value.password!,
+          }),
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: () => {
+          this.signupSuccess.set(true);
+          this.isLoading.set(false);
+          setTimeout(() => this.router.navigate(['/products']), 1500);
+        },
+        error: (err) => {
+          this.error.set(err.error?.message || 'Signup failed. Please try again.');
+          this.isLoading.set(false);
+        },
+      });
   }
-  togglefieldVisibility(field: WritableSignal<boolean>): void {
-    field.set(!field());
+
+  toggleVisibility(field: 'password' | 'confirm'): void {
+    if (field === 'password') this.showPassword.update((v) => !v);
+    if (field === 'confirm') this.showConfirmPassword.update((v) => !v);
   }
 }

@@ -1,28 +1,18 @@
 <app-account>
-  <!-- payment-options.component.html -->
-
-  <!-- ── Main content ──────────────────────────────────────────────────────── -->
   <main class="payment-main">
     <div class="payment-header">
       <h2 class="payment-header__title">My Payment Options</h2>
       @if (!showAddForm()) {
         <button class="btn btn--primary btn--sm" (click)="openAddForm()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
+          <span class="material-symbols-outlined"> add </span>
           Add New Card
         </button>
       }
     </div>
 
-    <!-- Feedback -->
     @if (saveSuccess()) {
       <div class="message message--success">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-          <polyline points="22 4 12 14.01 9 11.01" />
-        </svg>
+        <span class="material-symbols-outlined"> task_alt </span>
         Card saved successfully!
       </div>
     }
@@ -37,7 +27,6 @@
       </div>
     }
 
-    <!-- ── Cards grid ──────────────────────────────────────────────────────── -->
     @if (cards().length === 0 && !showAddForm()) {
       <div class="empty-state">
         <div class="empty-state__icon">
@@ -55,7 +44,6 @@
       <div class="cards-grid">
         @for (card of cards(); track card.id) {
           <div class="card-tile" [class.card-tile--default]="card.isDefault">
-            <!-- Card visual -->
             <div class="card-visual" [attr.data-type]="card.type">
               <div class="card-visual__top">
                 <div class="card-visual__chip"></div>
@@ -92,7 +80,6 @@
               </div>
             </div>
 
-            <!-- Default badge -->
             @if (card.isDefault) {
               <div class="card-tile__badge">
                 <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11">
@@ -104,7 +91,6 @@
               </div>
             }
 
-            <!-- Actions -->
             <div class="card-tile__actions">
               @if (!card.isDefault) {
                 <button
@@ -146,7 +132,6 @@
               </button>
             </div>
 
-            <!-- Delete confirm overlay -->
             @if (deleteConfirm() === card.id) {
               <div class="delete-confirm">
                 <p>
@@ -166,7 +151,6 @@
       </div>
     }
 
-    <!-- ── Add / Edit form ────────────────────────────────────────────────── -->
     @if (showAddForm()) {
       <div class="card-form">
         <h3 class="card-form__title">
@@ -174,7 +158,6 @@
         </h3>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-          <!-- Card holder -->
           <div class="field">
             <label class="field__label" for="holder">Card Holder Name</label>
             <input
@@ -192,7 +175,6 @@
             }
           </div>
 
-          <!-- Card number -->
           <div class="field">
             <label class="field__label" for="number">Card Number</label>
             <div class="field__wrap">
@@ -226,7 +208,6 @@
             }
           </div>
 
-          <!-- Exp + CVV row -->
           <div class="form__row">
             <div class="field">
               <label class="field__label" for="expMonth">Expiry Month</label>
@@ -272,11 +253,11 @@
                 class="field__input"
                 formControlName="cvv"
                 placeholder="•••"
-                maxlength="4"
+                maxlength="3"
                 [class.field__input--error]="form.get('cvv')?.invalid && form.get('cvv')?.touched"
               />
               @if (form.get('cvv')?.invalid && form.get('cvv')?.touched) {
-                <span class="field__error">3 or 4 digits</span>
+                <span class="field__error">3 digits</span>
               }
             </div>
           </div>

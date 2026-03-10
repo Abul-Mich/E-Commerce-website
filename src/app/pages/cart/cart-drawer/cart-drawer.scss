@@ -1,5 +1,3 @@
-// cart-drawer.component.scss
-
 $teal: #008174;
 $teal-light: rgba(0, 129, 116, 0.08);
 $teal-focus: rgba(0, 129, 116, 0.15);
@@ -29,7 +27,6 @@ button {
   font-family: inherit;
 }
 
-// ── Backdrop ──────────────────────────────────────────────────────────────────
 .drawer-backdrop {
   position: fixed;
   inset: 0;
@@ -48,7 +45,6 @@ button {
   }
 }
 
-// ── Drawer panel ──────────────────────────────────────────────────────────────
 .drawer {
   position: fixed;
   top: 0;
@@ -74,7 +70,6 @@ button {
   }
 }
 
-// ── Header ────────────────────────────────────────────────────────────────────
 .drawer__header {
   display: flex;
   align-items: center;
@@ -137,7 +132,6 @@ button {
   }
 }
 
-// ── Empty state ───────────────────────────────────────────────────────────────
 .drawer__empty {
   flex: 1;
   display: flex;
@@ -179,7 +173,6 @@ button {
   }
 }
 
-// ── Items list ────────────────────────────────────────────────────────────────
 .drawer__items {
   flex: 1;
   overflow-y: auto;
@@ -196,7 +189,6 @@ button {
   }
 }
 
-// ── Cart item ─────────────────────────────────────────────────────────────────
 .cart-item {
   display: flex;
   align-items: flex-start;
@@ -298,7 +290,6 @@ button {
   }
 }
 
-// ── Quantity controls ─────────────────────────────────────────────────────────
 .qty {
   display: flex;
   align-items: center;
@@ -346,7 +337,6 @@ button {
   }
 }
 
-// ── Footer ────────────────────────────────────────────────────────────────────
 .drawer__footer {
   padding: 20px 24px 28px;
   border-top: 1.5px solid $border;
@@ -399,9 +389,7 @@ button {
   gap: 10px;
 }
 
-// ── Buttons ───────────────────────────────────────────────────────────────────
 .btn {
-  //   flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;

@@ -1,11 +1,7 @@
-<!-- profile-edit.component.html -->
-
 <app-account>
-  <!-- ── Main form ─────────────────────────────────────────────────────────── -->
   <main class="profile-form">
     <h2 class="profile-form__title">Edit Your Profile</h2>
 
-    <!-- Feedback messages -->
     @if (saveSuccess()) {
       <div class="message message--success">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -27,7 +23,6 @@
     }
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-      <!-- ── Avatar upload ─────────────────────────────────────────────── -->
       <div class="avatar-section">
         <div class="avatar-preview">
           @if (avatarPreview()) {
@@ -56,7 +51,6 @@
         />
       </div>
 
-      <!-- ── Row: First Name + Last Name ──────────────────────────────── -->
       <div class="form__row">
         <div class="field">
           <label class="field__label" for="firstName">First Name</label>
@@ -93,7 +87,6 @@
         </div>
       </div>
 
-      <!-- ── Row: Username + Email ─────────────────────────────────────── -->
       <div class="form__row">
         <div class="field">
           <label class="field__label" for="username">Username</label>
@@ -131,7 +124,6 @@
         </div>
       </div>
 
-      <!-- ── Row: Date of Birth + Role ────────────────────────────────── -->
       <div class="form__row">
         <div class="field">
           <label class="field__label" for="dateOfBirth">Date of Birth</label>
@@ -144,13 +136,11 @@
         </div>
       </div>
 
-      <!-- ── Password Changes ──────────────────────────────────────────── -->
       <div class="section-divider">
         <span>Password Changes</span>
       </div>
 
       <div formGroupName="passwords" class="passwords-group">
-        <!-- Current Password -->
         <div class="field">
           <div class="field__wrap">
             <input
@@ -174,7 +164,6 @@
           </div>
         </div>
 
-        <!-- New Password -->
         <div class="field">
           <div class="field__wrap">
             <input
@@ -204,7 +193,6 @@
           }
         </div>
 
-        <!-- Confirm New Password -->
         <div class="field">
           <div class="field__wrap">
             <input
@@ -235,7 +223,6 @@
         </div>
       </div>
 
-      <!-- ── Actions ───────────────────────────────────────────────────── -->
       <div class="form__actions">
         <button type="button" class="btn btn--ghost" (click)="onCancel()">Cancel</button>
         <button type="submit" class="btn btn--primary" [disabled]="form.invalid || isLoading()">

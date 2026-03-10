@@ -1,107 +1,257 @@
+$teal: #008174;
+$teal-light: #e8f5f0;
+$text-dark: #1a1f2e;
+$text-mid: #5a6278;
+$text-light: #9aa3bb;
+$border: #eef1f7;
+$white: #ffffff;
+$font-body: 'DM Sans', system-ui, sans-serif;
+$font-display: 'Playfair Display', serif;
+
 :host {
   display: block;
   width: 100%;
 }
 
 .product-card {
-  width: 100%; // ← fill the grid cell instead of fixed 320px
-  max-width: 280px; // ← reduced from 320px
-  height: auto; // ← reduced from 420px
-  background: #ffffff;
-  border-radius: 6px;
+  background: $white;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
   cursor: pointer;
+  font-family: $font-body;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+  border: 1px solid $border;
 }
 
-.product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+.product-card__stars {
+  color: #f4a623;
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
 }
 
-.image-container {
-  width: 100%;
-  height: 220px;
-  background: #f9f9f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  flex-shrink: 0;
+.product-card__review-count {
+  font-size: 0.78rem;
+  color: $text-light;
 }
 
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
+.product-card__price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: $teal;
 }
 
-.product-card:hover .product-image {
-  transform: scale(1.05);
+.product-card__category,
+.product-card__category-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: $teal;
+  background: $teal-light;
+  padding: 3px 10px;
+  border-radius: 99px;
 }
 
-.product-content {
-  padding: 18px;
+.product-card--grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  flex: 1;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.11);
+
+    .product-card__image {
+      transform: scale(1.06);
+    }
+  }
+
+  .product-card__image-wrap {
+    position: relative;
+    width: 100%;
+    height: 210px;
+    background: #f7f9fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 16px;
+    transition: transform 0.35s ease;
+  }
+
+  .product-card__category-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+
+  .product-card__body {
+    padding: 16px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .product-card__title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $text-dark;
+    margin: 0;
+    line-height: 1.4;
+    height: calc(1.3rem * 2);
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .product-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .product-card__footer {
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid $border;
+  }
 }
 
-.product-title {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #1f1f1f;
-  margin: 0;
-  line-height: 1.3rem;
-  height: calc(1.3rem * 2);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.review-container {
+.product-card--list {
   display: flex;
-  align-items: center;
-  gap: 8px;
-}
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 
-.review-container span {
-  margin: 0;
-  line-height: 1;
-}
+  &:hover {
+    transform: translateX(4px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.09);
 
-.stars {
-  color: #f5a623;
-  font-size: 0.95rem;
-  letter-spacing: 2px;
-  display: flex;
-  align-items: center;
-}
+    .product-card__image {
+      transform: scale(1.05);
+    }
+  }
 
-.review-count {
-  font-size: 0.85rem;
-  color: #777;
-}
+  .product-card__image-wrap {
+    width: 160px;
+    min-width: 160px;
+    background: #f7f9fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    border-right: 1px solid $border;
+  }
 
-.price-container {
-  margin-top: 6px;
-}
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 20px;
+    transition: transform 0.35s ease;
+  }
 
-.price {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #111;
-}
+  .product-card__body {
+    flex: 1;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
 
-.add-button {
-  margin-top: auto;
+  .product-card__category {
+    align-self: flex-start;
+  }
+
+  .product-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-dark;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .product-card__description {
+    font-size: 0.83rem;
+    color: $text-mid;
+    line-height: 1.55;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .product-card__meta {
+    margin-top: auto;
+  }
+
+  .product-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .product-card__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 14px;
+    padding: 20px 24px;
+    border-left: 1px solid $border;
+    min-width: 160px;
+    flex-shrink: 0;
+  }
+
+  .product-card__cta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    background: $teal;
+    color: $white;
+    border: none;
+    border-radius: 8px;
+    font-family: $font-body;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background 0.18s ease,
+      transform 0.18s ease;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover {
+      background: darken($teal, 6%);
+      transform: translateY(-1px);
+    }
+  }
 }
