@@ -1,7 +1,7 @@
 import { AuthService } from './../../core/services/auth-service';
 import { Component, signal, computed, effect, inject, DestroyRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IProduct } from '../../models/product';
+import { IProduct } from '../../shared/models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../core/services/product';
 import { toSignal } from '@angular/core/rxjs-interop';

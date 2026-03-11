@@ -20,3 +20,13 @@ export interface IUserRequest {
   dateOfBirth?: string;
   imageUrl?: string;
 }
+
+export interface UpdateUserPayload {
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  password?: string;
+  dateOfBirth?: string;
+  imageUrl?: string;
+}

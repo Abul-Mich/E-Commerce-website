@@ -1,10 +1,5 @@
 import { Component, output, signal } from '@angular/core';
-import { SortOption } from '../sort-banner';
-
-interface SortOptionItem {
-  label: string;
-  value: SortOption;
-}
+import { SortOption, SortOptionItem } from '../sort-banner';
 
 @Component({
   selector: 'app-custom-dropdown',

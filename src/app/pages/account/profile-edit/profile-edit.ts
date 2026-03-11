@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { IUserResponse } from '../../../core/models/User';
-import { UpdateUserPayload, UserService } from '../../../core/services/user';
+import { IUserResponse, UpdateUserPayload } from '../../../core/models/User';
+import { UserService } from '../../../core/services/user';
 import { AccountComponent } from '../account';
 
 function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {

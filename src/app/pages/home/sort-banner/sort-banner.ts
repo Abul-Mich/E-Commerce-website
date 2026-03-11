@@ -4,7 +4,7 @@ import { DropdownComponent } from './dropdown/dropdown';
 export type ViewMode = 'grid' | 'list';
 export type SortOption = 'best-selling' | 'price-asc' | 'price-desc' | 'newest' | 'rating';
 
-interface SortOptionItem {
+export interface SortOptionItem {
   value: SortOption;
   label: string;
 }

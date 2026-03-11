@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth-service';
-import { IUser } from '../../../../models/user';
+import { IUser } from '../../../models/user';
 
 function getUserFromStorage(): IUser | null {
   try {

@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { IProduct } from '../../../models/product';
+import { IProduct } from '../../models/product';
 import { Router } from '@angular/router';
 import { ViewMode } from '../../../pages/home/sort-banner/sort-banner';
 

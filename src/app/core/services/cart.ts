@@ -1,17 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, computed, effect, inject } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-
-export interface CartItem {
-  productId: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-  category: string;
-  description: string;
-  stock?: number;
-}
+import { CartItem } from '../../shared/models/cart';
 
 export interface CartSummary {
   totalItems: number;

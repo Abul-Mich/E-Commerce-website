@@ -1,6 +1,6 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IProduct } from '../../models/product';
+import { IProduct } from '../../shared/models/product';
 import { take } from 'rxjs';
 
 @Injectable({

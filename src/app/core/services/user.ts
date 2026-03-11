@@ -1,19 +1,9 @@
 import { inject, Injectable, computed } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { IUser } from '../../models/user';
-import { IUserResponse } from '../models/User';
+import { IUser } from '../../shared/models/user';
+import { IUserResponse, UpdateUserPayload } from '../models/User';
 import { AuthService } from './auth-service';
-
-export interface UpdateUserPayload {
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-  username?: string;
-  password?: string;
-  dateOfBirth?: string;
-  imageUrl?: string;
-}
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

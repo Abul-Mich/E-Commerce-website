@@ -5,7 +5,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef, GridReadyEvent, GridApi } from 'ag-grid-community';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DecimalPipe } from '@angular/common';
-import { IProduct } from '../../models/product';
+import { IProduct } from '../../shared/models/product';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

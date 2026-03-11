@@ -1,6 +1,7 @@
 import { Component, inject, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CartService, CartItem } from '../../../core/services/cart';
+import { CartService } from '../../../core/services/cart';
+import { CartItem } from '../../../shared/models/cart';
 
 @Component({
   selector: 'app-cart-page',
