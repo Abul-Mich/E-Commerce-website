@@ -5,7 +5,7 @@ import { IProduct } from '../../shared/models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../core/services/product';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map, switchMap } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs';
 import { CartService } from '../../core/services/cart';
 import { ProductCard } from '../../shared/components/product-card/product-card';
 
@@ -29,6 +29,11 @@ export class ProductDetailsComponent {
     this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
       switchMap((id) => this.productService.getProductById(id)),
+      tap((product) => {
+        if (!product || !product.id) {
+          this.router.navigate(['/not-found-page'], { skipLocationChange: true });
+        }
+      }),
     ),
     { initialValue: null },
   );

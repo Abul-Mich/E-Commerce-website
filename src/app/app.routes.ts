@@ -3,6 +3,7 @@ import { authGuard } from './core/auth/guards/auth-guard';
 import { guestGuard } from './core/auth/guards/guest-guard';
 import { MainLayoutComponent } from './core/layouts/main-layout';
 import { AuthLayoutComponent } from './core/layouts/auth-layout';
+import { adminGuard } from './core/auth/guards/admin-guard';
 
 export const routes: Routes = [
   {
@@ -23,7 +24,7 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () =>
           import('./pages/dashboard/dashboard').then((m) => m.DashboardComponent),
-        canActivate: [authGuard],
+        canActivate: [adminGuard],
       },
       {
         path: 'contact-us',
