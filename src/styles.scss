@@ -17,3 +17,234 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+// ─── Material Icons — global sizing & alignment ──────────────────────────────
+.material-icons {
+  font-family: 'Material Icons';
+  font-style: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+  user-select: none;
+
+  // Default size matches the old SVG viewBox (24px)
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+
+  // ── Contextual sizes ──────────────────────────────────────────────────────
+
+  // Form field icons (email, lock, person inside inputs)
+  &.mi-field {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  // Password visibility toggle
+  &.mi-toggle {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Submit / CTA arrow
+  &.mi-arrow-right {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Back arrow
+  &.mi-arrow-left {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Dropdown caret (profile trigger)
+  &.mi-caret {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  // Dropdown menu item icons (person, logout)
+  &.mi-menu {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  // Dropdown item arrow chevron
+  &.mi-arrow {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    margin-left: auto;
+  }
+
+  // Search bar icons
+  &.mi-search {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Close / X icons
+  &.mi-close {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Cart drawer icons
+  &.mi-cart {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+
+  // Quantity +/- buttons
+  &.mi-qty {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  // Remove / delete item
+  &.mi-remove {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Shipping icon
+  &.mi-shipping {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  // Trust / security badges
+  &.mi-badge {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Footer social icons
+  &.mi-social {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Filter title icon
+  &.mi-filter-title {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Filter accordion chevrons
+  &.mi-chevron {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease;
+  }
+
+  // Checkbox checkmark
+  &.mi-check-small {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  // Pagination arrows
+  &.mi-page {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Dashboard stat card icons
+  &.mi-stat {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  // Dashboard export button
+  &.mi-export {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  // Profile edit messages
+  &.mi-msg {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Checkout success icon
+  &.mi-success {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+  }
+
+  // Add card link plus icon
+  &.mi-add {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  // Credit card icon
+  &.mi-card {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  // Payment / account action buttons (edit, delete)
+  &.mi-action {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  // Avatar placeholder person
+  &.mi-avatar {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
+
+  // Upload icon
+  &.mi-upload {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  // Empty cart state icon
+  &.mi-empty-cart {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+  }
+
+  // Free shipping check
+  &.mi-check {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}

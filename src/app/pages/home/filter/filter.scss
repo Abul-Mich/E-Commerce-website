@@ -321,7 +321,7 @@ input[type='checkbox'] {
 
   &__stars {
     display: flex;
-    gap: 2px;
+    gap: 8px;
   }
 
   &__label {
@@ -334,11 +334,11 @@ input[type='checkbox'] {
 .star {
   width: 14px;
   height: 14px;
-  fill: $border;
+  color: $border;
   stroke: none;
   transition: fill 0.15s;
 
   &--filled {
-    fill: #f4a623;
+    color: #f4a623;
   }
 }

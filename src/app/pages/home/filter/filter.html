@@ -1,9 +1,7 @@
 <aside class="filter">
   <div class="filter__header">
     <h3 class="filter__title">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-      </svg>
+      <span class="material-icons mi-filter-title">filter_list</span>
       Filters
       @if (activeCount() > 0) {
         <span class="filter__count">{{ activeCount() }}</span>
@@ -17,15 +15,7 @@
   <div class="filter__section" [class.filter__section--closed]="!categoriesOpen()">
     <button class="filter__section-header" (click)="toggle('categories')">
       <span>Category</span>
-      <svg
-        class="filter__chevron"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-      >
-        <path d="M6 9l6 6 6-6" />
-      </svg>
+      <span class="material-icons filter__chevron mi-chevron">expand_more</span>
     </button>
 
     @if (categoriesOpen()) {
@@ -45,9 +35,7 @@
             />
             <span class="filter__checkbox-box">
               @if (isCategorySelected(cat)) {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
+                <span class="material-icons mi-check-small">check</span>
               }
             </span>
             <span class="filter__checkbox-label">{{ formatLabel(cat) }}</span>
@@ -60,15 +48,7 @@
   <div class="filter__section" [class.filter__section--closed]="!priceOpen()">
     <button class="filter__section-header" (click)="toggle('price')">
       <span>Price Range</span>
-      <svg
-        class="filter__chevron"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-      >
-        <path d="M6 9l6 6 6-6" />
-      </svg>
+      <span class="material-icons filter__chevron mi-chevron">expand_more</span>
     </button>
 
     @if (priceOpen()) {
@@ -117,15 +97,7 @@
   >
     <button class="filter__section-header" (click)="toggle('rating')">
       <span>Min Rating</span>
-      <svg
-        class="filter__chevron"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-      >
-        <path d="M6 9l6 6 6-6" />
-      </svg>
+      <span class="material-icons filter__chevron mi-chevron">expand_more</span>
     </button>
 
     @if (ratingOpen()) {
@@ -138,11 +110,7 @@
           >
             <div class="rating-row__stars">
               @for (s of stars; track s) {
-                <svg class="star" [class.star--filled]="s <= star" viewBox="0 0 24 24">
-                  <path
-                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                  />
-                </svg>
+                <span class="material-icons star" [class.star--filled]="s <= star">star</span>
               }
             </div>
             <span class="rating-row__label">+</span>

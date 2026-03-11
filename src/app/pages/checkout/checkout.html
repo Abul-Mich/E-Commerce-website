@@ -12,10 +12,7 @@
   @if (success()) {
     <div class="success-state">
       <div class="success-state__icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-          <polyline points="22 4 12 14.01 9 11.01" />
-        </svg>
+        <span class="material-icons mi-success">check_circle</span>
       </div>
       <h2>Order Placed!</h2>
       <p>Redirecting to your order...</p>
@@ -27,11 +24,7 @@
       <div class="checkout-left">
         @if (error()) {
           <div class="message message--error">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
-            </svg>
+            <span class="material-icons mi-msg">info</span>
             {{ error() }}
           </div>
         }
@@ -97,10 +90,7 @@
             </div>
 
             <a routerLink="/payment" class="add-card-link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
+              <span class="material-icons mi-add">add</span>
               Add a new card
             </a>
           }
@@ -161,10 +151,7 @@
 
         @if (selectedCard()) {
           <div class="selected-payment">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
-              <line x1="1" y1="10" x2="23" y2="10" />
-            </svg>
+            <span class="material-icons mi-card">credit_card</span>
             <span>{{ maskedNumber(selectedCard()!.last4) }}</span>
           </div>
         }
@@ -174,9 +161,7 @@
             <span>Placing Order...</span>
           } @else {
             <span>Place Order</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
+            <span class="material-icons mi-arrow-right">arrow_forward</span>
           }
         </button>
 
@@ -185,9 +170,7 @@
         }
 
         <div class="security-note">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          </svg>
+          <span class="material-icons mi-badge">verified_user</span>
           <span>Your payment is secured and encrypted</span>
         </div>
       </aside>

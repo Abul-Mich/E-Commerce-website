@@ -4,20 +4,13 @@
 
     @if (saveSuccess()) {
       <div class="message message--success">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-          <polyline points="22 4 12 14.01 9 11.01" />
-        </svg>
+        <span class="material-icons mi-msg">check_circle</span>
         Profile updated successfully!
       </div>
     }
     @if (error()) {
       <div class="message message--error">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="8" x2="12" y2="12" />
-          <line x1="12" y1="16" x2="12.01" y2="16" />
-        </svg>
+        <span class="material-icons mi-msg">info</span>
         {{ error() }}
       </div>
     }
@@ -28,18 +21,11 @@
           @if (avatarPreview()) {
             <img [src]="avatarPreview()" alt="Profile photo" />
           } @else {
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
+            <span class="material-icons mi-avatar">person</span>
           }
         </div>
         <label class="avatar-upload" for="avatarInput">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="17 8 12 3 7 8" />
-            <line x1="12" y1="3" x2="12" y2="15" />
-          </svg>
+          <span class="material-icons mi-upload">upload</span>
           Change Photo
         </label>
         <input
@@ -156,10 +142,11 @@
               (click)="togglePw('current')"
               aria-label="Toggle current password"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
+              @if (showCurrentPw()) {
+                <span class="material-icons mi-toggle">visibility_off</span>
+              } @else {
+                <span class="material-icons mi-toggle">visibility</span>
+              }
             </button>
           </div>
         </div>
@@ -182,10 +169,11 @@
               (click)="togglePw('new')"
               aria-label="Toggle new password"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
+              @if (showNewPw()) {
+                <span class="material-icons mi-toggle">visibility_off</span>
+              } @else {
+                <span class="material-icons mi-toggle">visibility</span>
+              }
             </button>
           </div>
           @if (pw.get('newPassword')?.invalid && pw.get('newPassword')?.touched) {
@@ -211,10 +199,11 @@
               (click)="togglePw('confirm')"
               aria-label="Toggle confirm password"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
+              @if (showConfirmPw()) {
+                <span class="material-icons mi-toggle">visibility_off</span>
+              } @else {
+                <span class="material-icons mi-toggle">visibility</span>
+              }
             </button>
           </div>
           @if (pw.hasError('passwordMismatch') && pw.get('confirmPassword')?.touched) {
