@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { IUserResponse, UpdateUserPayload } from '../../../core/models/User';
+import { IUserResponse, IUpdateUserPayload } from '../../../core/models/User';
 import { UserService } from '../../../core/services/user';
 import { AccountComponent } from '../account';
 
@@ -92,7 +92,7 @@ export class ProfileEditComponent {
 
     const { passwords, ...profileFields } = this.form.value;
 
-    const payload: UpdateUserPayload = {
+    const payload: IUpdateUserPayload = {
       ...profileFields,
     };
 

@@ -1,7 +1,7 @@
 import { Component, inject, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart';
-import { CartItem } from '../../../shared/models/cart';
+import { ICartItem } from '../../../shared/models/cart';
 
 @Component({
   selector: 'app-cart-page',
@@ -44,7 +44,7 @@ export class CartPageComponent {
   formatPrice(n: number): string {
     return n.toFixed(2);
   }
-  itemTotal(item: CartItem): string {
+  itemTotal(item: ICartItem): string {
     return (item.price * item.quantity).toFixed(2);
   }
 }

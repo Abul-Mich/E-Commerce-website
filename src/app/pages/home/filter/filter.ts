@@ -1,13 +1,13 @@
 import { Component, input, output, signal, computed, effect } from '@angular/core';
 
-export interface FilterState {
+export interface IFilterState {
   categories: string[];
   priceMin: number;
   priceMax: number;
   ratingMin: number;
 }
 
-// const DEFAULT_FILTER: FilterState = {
+// const DEFAULT_FILTER: IFilterState = {
 //   categories: [],
 //   priceMin: 0,
 //   priceMax: 1000,
@@ -25,7 +25,7 @@ export class FilterComponent {
 
   readonly maxPrice = input<number>(1000);
 
-  readonly filterChange = output<FilterState>();
+  readonly filterChange = output<IFilterState>();
 
   readonly selectedCategories = signal<string[]>([]);
   readonly priceMin = signal<number>(0);

@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { CartService } from '../../core/services/cart';
-import { PaymentCard } from '../account/payment-options/payment-options';
+import { IPaymentCard } from '../account/payment-options/payment-options';
 
 @Component({
   selector: 'app-checkout',
@@ -17,7 +17,7 @@ export class CheckoutComponent {
   private readonly destroyRef = inject(DestroyRef);
   readonly cart = inject(CartService);
 
-  readonly cards = signal<PaymentCard[]>(this.loadCards());
+  readonly cards = signal<IPaymentCard[]>(this.loadCards());
   readonly selectedCardId = signal<string | null>(localStorage.getItem('default_payment_id'));
 
   readonly isLoading = signal(false);
@@ -36,10 +36,10 @@ export class CheckoutComponent {
     () => !!this.selectedCardId() && this.cart.hasItems() && !this.isLoading(),
   );
 
-  private loadCards(): PaymentCard[] {
+  private loadCards(): IPaymentCard[] {
     try {
       const raw = localStorage.getItem('payment_cards');
-      return raw ? (JSON.parse(raw) as PaymentCard[]) : [];
+      return raw ? (JSON.parse(raw) as IPaymentCard[]) : [];
     } catch {
       return [];
     }

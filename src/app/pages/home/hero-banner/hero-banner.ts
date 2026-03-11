@@ -2,7 +2,7 @@ import { Component, inject, DestroyRef, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { interval } from 'rxjs';
 
-interface Countdown {
+interface ICountdown {
   days: string;
   hours: string;
   minutes: string;
@@ -28,15 +28,15 @@ export class HeroBannerComponent {
     localStorage.setItem('sale_end_date', end.toISOString());
     return end;
   }
-  readonly countdown = signal<Countdown>(this.computeCountdown());
+  readonly countdown = signal<ICountdown>(this.computeICountdown());
 
   constructor() {
     interval(1000)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.countdown.set(this.computeCountdown()));
+      .subscribe(() => this.countdown.set(this.computeICountdown()));
   }
 
-  private computeCountdown(): Countdown {
+  private computeICountdown(): ICountdown {
     const distance = this.saleEndDate.getTime() - Date.now();
 
     if (distance <= 0) {

@@ -3,7 +3,7 @@ import { ProductService } from '../../core/services/product';
 import { HeroBannerComponent } from './hero-banner/hero-banner';
 import { ProductsComponent } from './product-list/products';
 import { SortBannerComponent, SortOption, ViewMode } from './sort-banner/sort-banner';
-import { FilterComponent, FilterState } from './filter/filter';
+import { FilterComponent, IFilterState } from './filter/filter';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +25,7 @@ export class HomeComponent {
     Math.ceil(Math.max(...this.allProducts().map((p) => p.price), 100)),
   );
 
-  readonly activeFilters = signal<FilterState>({
+  readonly activeFilters = signal<IFilterState>({
     categories: [],
     priceMin: 0,
     priceMax: 1000,
@@ -35,7 +35,7 @@ export class HomeComponent {
   readonly activeSort = signal<SortOption>('best-selling');
   readonly activeViewMode = signal<ViewMode>('grid');
 
-  onFilterChange(filters: FilterState): void {
+  onFilterChange(filters: IFilterState): void {
     this.activeFilters.set(filters);
   }
 

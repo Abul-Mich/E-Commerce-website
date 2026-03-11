@@ -4,7 +4,7 @@ import { inject } from '@angular/core';
 import { AccountComponent } from '../account';
 import { AuthService } from '../../../core/services/auth-service';
 
-export interface PaymentCard {
+export interface IPaymentCard {
   id: string;
   type: 'visa' | 'mastercard' | 'amex' | 'other';
   last4: string;
@@ -33,7 +33,7 @@ export class PaymentOptionsComponent {
     return `${this.user?.firstName ?? ''} ${this.user?.lastName ?? ''}`.trim();
   }
 
-  readonly cards = signal<PaymentCard[]>(this.loadCards());
+  readonly cards = signal<IPaymentCard[]>(this.loadCards());
 
   readonly showAddForm = signal(false);
   readonly editingId = signal<string | null>(null);
@@ -43,16 +43,16 @@ export class PaymentOptionsComponent {
 
   readonly defaultCard = computed(() => this.cards().find((c) => c.isDefault) ?? null);
 
-  private loadCards(): PaymentCard[] {
+  private loadCards(): IPaymentCard[] {
     try {
       const raw = localStorage.getItem(CARDS_KEY);
-      return raw ? (JSON.parse(raw) as PaymentCard[]) : [];
+      return raw ? (JSON.parse(raw) as IPaymentCard[]) : [];
     } catch {
       return [];
     }
   }
 
-  private syncCards(cards: PaymentCard[]): void {
+  private syncCards(cards: IPaymentCard[]): void {
     localStorage.setItem(CARDS_KEY, JSON.stringify(cards));
   }
 
@@ -64,7 +64,7 @@ export class PaymentOptionsComponent {
     cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
   });
 
-  cardTypeFromNumber(number: string): PaymentCard['type'] {
+  cardTypeFromNumber(number: string): IPaymentCard['type'] {
     if (number.startsWith('4')) return 'visa';
     if (/^5[1-5]/.test(number)) return 'mastercard';
     if (/^3[47]/.test(number)) return 'amex';
@@ -84,7 +84,7 @@ export class PaymentOptionsComponent {
     this.form.patchValue({ holder: this.fullName });
   }
 
-  openEditForm(card: PaymentCard): void {
+  openEditForm(card: IPaymentCard): void {
     this.editingId.set(card.id);
     this.showAddForm.set(true);
     this.form.patchValue({
@@ -110,7 +110,7 @@ export class PaymentOptionsComponent {
     const last4 = number!.slice(-4);
     const type = this.cardTypeFromNumber(number!);
 
-    let updated: PaymentCard[];
+    let updated: IPaymentCard[];
 
     if (this.editingId()) {
       updated = this.cards().map((c) =>
@@ -119,7 +119,7 @@ export class PaymentOptionsComponent {
           : c,
       );
     } else {
-      const newCard: PaymentCard = {
+      const newCard: IPaymentCard = {
         id: Date.now().toString(),
         type,
         last4,

@@ -4,7 +4,7 @@ import { DropdownComponent } from './dropdown/dropdown';
 export type ViewMode = 'grid' | 'list';
 export type SortOption = 'best-selling' | 'price-asc' | 'price-desc' | 'newest' | 'rating';
 
-export interface SortOptionItem {
+export interface ISortOptionItem {
   value: SortOption;
   label: string;
 }
@@ -23,7 +23,7 @@ export class SortBannerComponent {
   readonly selectedSort = signal<SortOption>('best-selling');
   readonly viewMode = signal<ViewMode>('grid');
 
-  readonly sortOptions: SortOptionItem[] = [
+  readonly sortOptions: ISortOptionItem[] = [
     { value: 'best-selling', label: 'Best Selling' },
     { value: 'newest', label: 'Newest' },
     { value: 'price-asc', label: 'Price: Low to High' },

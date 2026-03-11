@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, computed, effect, inject } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { CartItem } from '../../shared/models/cart';
+import { ICartItem } from '../../shared/models/cart';
 
-export interface CartSummary {
+export interface ICartSummary {
   totalItems: number;
   totalPrice: number;
   hasItems: boolean;
@@ -17,7 +17,7 @@ export class CartService {
   private readonly MAX_TOTAL = 10;
   private readonly API_URL = 'https://fakestoreapi.com/carts';
 
-  readonly items = signal<CartItem[]>(this.loadFromStorage());
+  readonly items = signal<ICartItem[]>(this.loadFromStorage());
   readonly isCartFull = computed(() => this.totalItems() >= this.MAX_TOTAL);
 
   readonly totalItems = computed(() => this.items().reduce((sum, item) => sum + item.quantity, 0));
@@ -25,7 +25,7 @@ export class CartService {
     this.items().reduce((sum, item) => sum + item.price * item.quantity, 0),
   );
   readonly hasItems = computed(() => this.items().length > 0);
-  readonly summary = computed<CartSummary>(() => ({
+  readonly summary = computed<ICartSummary>(() => ({
     totalItems: this.totalItems(),
     totalPrice: this.totalPrice(),
     hasItems: this.hasItems(),
@@ -41,7 +41,7 @@ export class CartService {
     );
   }
 
-  addItem(product: Omit<CartItem, 'quantity'>, quantity = 1): void {
+  addItem(product: Omit<ICartItem, 'quantity'>, quantity = 1): void {
     const stock = Math.min(product.stock ?? Infinity, this.MAX_QUANTITY);
     const remaining = this.MAX_TOTAL - this.totalItems();
     if (remaining <= 0) return;
@@ -121,16 +121,16 @@ export class CartService {
       .pipe(tap(() => this.clearCart()));
   }
 
-  private loadFromStorage(): CartItem[] {
+  private loadFromStorage(): ICartItem[] {
     try {
       const raw = localStorage.getItem(this.CART_KEY);
-      return raw ? (JSON.parse(raw) as CartItem[]) : [];
+      return raw ? (JSON.parse(raw) as ICartItem[]) : [];
     } catch {
       return [];
     }
   }
 
-  private syncToStorage(cart: CartItem[]): void {
+  private syncToStorage(cart: ICartItem[]): void {
     try {
       localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
     } catch {

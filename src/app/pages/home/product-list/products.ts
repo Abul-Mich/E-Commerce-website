@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../core/services/product';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { IProduct } from '../../../shared/models/product';
-import { FilterState } from '../filter/filter';
+import { IFilterState } from '../filter/filter';
 import { SortOption, ViewMode } from '../sort-banner/sort-banner';
 import { ProductCard } from '../../../shared/components/product-card/product-card';
 import { map } from 'rxjs';
@@ -20,7 +20,7 @@ export class ProductsComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  readonly filters = input<FilterState>({
+  readonly filters = input<IFilterState>({
     categories: [],
     priceMin: 0,
     priceMax: 1000,

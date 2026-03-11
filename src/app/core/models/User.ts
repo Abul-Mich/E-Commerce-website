@@ -21,7 +21,7 @@ export interface IUserRequest {
   imageUrl?: string;
 }
 
-export interface UpdateUserPayload {
+export interface IUpdateUserPayload {
   email?: string;
   firstName?: string;
   lastName?: string;

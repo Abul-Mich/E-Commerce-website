@@ -1,7 +1,7 @@
 import { Component, inject, computed, output, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../../core/services/cart';
-import { CartItem } from '../../../shared/models/cart';
+import { ICartItem } from '../../../shared/models/cart';
 
 @Component({
   selector: 'app-cart-drawer',
@@ -49,7 +49,7 @@ export class CartDrawerComponent {
     return price.toFixed(2);
   }
 
-  itemTotal(item: CartItem): string {
+  itemTotal(item: ICartItem): string {
     return (item.price * item.quantity).toFixed(2);
   }
 }

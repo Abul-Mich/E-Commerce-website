@@ -2,7 +2,7 @@ import { inject, Injectable, computed } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { IUser } from '../../shared/models/user';
-import { IUserResponse, UpdateUserPayload } from '../models/User';
+import { IUserResponse, IUpdateUserPayload } from '../models/User';
 import { AuthService } from './auth-service';
 
 @Injectable({ providedIn: 'root' })
@@ -50,7 +50,7 @@ export class UserService {
       .pipe(tap((response) => this.persistUser(response)));
   }
 
-  updateProfile(payload: UpdateUserPayload): Observable<IUserResponse> {
+  updateProfile(payload: IUpdateUserPayload): Observable<IUserResponse> {
     return this.http
       .patch<IUserResponse>(`${this.BASE_URL}/user`, payload, { headers: this.authHeaders })
       .pipe(tap((response) => this.persistUser(response)));
